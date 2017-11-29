@@ -1,6 +1,7 @@
 var express = require('express');
 var hbs = require('hbs');
 var fs = require('fs');
+const port = process.env.Port || 8888;
 
 var app = express();
 hbs.registerPartials(__dirname + '/html/partials');
@@ -34,4 +35,6 @@ app.get('/about', (req, res) => {
     });
 });
 
-app.listen(8888);
+app.listen(port,()=>{
+    console.log(`server port is ${port}`)
+});
