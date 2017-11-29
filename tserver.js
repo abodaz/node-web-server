@@ -1,7 +1,7 @@
 var express = require('express');
 var hbs = require('hbs');
 var fs = require('fs');
-const port = process.env.Port || 8888;
+const port = process.env.PORT || 8888;
 
 var app = express();
 hbs.registerPartials(__dirname + '/html/partials');
@@ -14,10 +14,10 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use((req,res,next)=>{
-    res.render('break');
-   // next();
-});
+// app.use((req,res,next)=>{
+//     res.render('break');
+//    // next();
+// });
 
 hbs.registerHelper('year', () => {
     return new Date().getFullYear();
