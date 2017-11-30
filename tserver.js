@@ -31,7 +31,13 @@ app.get('/', (req, res) => {
 
 app.get('/about', (req, res) => {
     res.render('about', {
-        pagename1: 'about'
+        pagename: 'about'
+    });
+});
+
+app.get('/project',(req,res)=>{
+    res.render('project',{
+        pagename: 'projcet'
     });
 });
 
