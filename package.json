@@ -6,7 +6,7 @@
   "main": "tserver.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node tserver.js"
+    "start": "nodemon tserver.js"
   },
   "dependencies": {
     "express": "^4.16.2",

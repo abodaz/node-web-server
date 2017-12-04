@@ -6,6 +6,7 @@ var fs = require('fs');
 const port = process.env.PORT || 8888;
 
 var app = express();
+app.use(express.static(__dirname+'/views'));
 hbs.registerPartials(__dirname + '/html/partials');
 app.set('view engine', 'hbs');
 app.use((req, res, next) => {
@@ -43,6 +44,21 @@ app.get('/project',(req,res)=>{
         pagename: 'projcet'
     });
 });
+
+app.get('/login',(req,res)=>{
+    res.render('login',{
+        pagename: 'login'
+    });
+});
+
+app.get('/signup',(req,res)=>{
+    res.render('signup',{
+        pagename: 'sign up'
+    });
+});
+
+
+
 
 app.listen(port,()=>{
     console.log(`server port is ${port}`)
