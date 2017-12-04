@@ -10,6 +10,7 @@ app.use((req, res, next) => {
     var now = new Date().toString();
     var log = `time: ${now} ${req.method} ${req.url}`;
 
+    console.log('Hi Iam jayyab :)');
     console.log('sever.log'+log +'\n');
     next();
 });
