@@ -14,17 +14,17 @@
 <body>
   <div class="login-page">
   <div class="form">
-    <form class="login-form">
-      <input type="text" placeholder="First Name"/>
-      <input type="text" placeholder="Last Name"/>
-      <input type="text" placeholder="User Name"/>
-      <input type="password" placeholder="password"/>
-      <input type="text" placeholder="email address"/>
+    <form action="/signup" class="login-form" method="POST">
+     <!-- <input type="text" placeholder="First Name"/>
+      <input type="text" placeholder="Last Name"/>-->
+      <input name ="name" type="text" placeholder="User Name"/>
+      <input name ="password" type="password" placeholder="password"/>
+     <!-- <input type="text" placeholder="email address"/>
       <input type="text" placeholder="Phone NO."/>
       <input type="text" placeholder="Date of birth"/> {{!-- jayab --}}
       <input type="text" placeholder="Hire date"/> {{!-- jayab --}}
-      <input type="text" placeholder="Job id"/> 
-      <button>create</button> {{!-- jayab --}}
+      <input type="text" placeholder="Job id"/> -->
+      <button type="submit">create</button> {{!-- jayab --}}
     </form>
   </div>
 </div>
