@@ -6,7 +6,8 @@ var fs = require('fs');
 const port = process.env.PORT || 8888;
 
 var app = express();
-app.use(express.static(__dirname+'/views'));
+ app.use(express.static(__dirname+'/views'));
+app.use(express.static(__dirname+'/adminViews'));
 hbs.registerPartials(__dirname + '/html/partials');
 app.set('view engine', 'hbs');
 app.use((req, res, next) => {
@@ -56,8 +57,29 @@ app.get('/signup',(req,res)=>{
         pagename: 'sign up'
     });
 });
+app.get('/admin',(req,res)=>{
+    res.render('admin',{
+        pagename: 'Admin Panel'
+    });
+});
 
+app.get('/seeusers',(req,res)=>{
+    res.render('seeusers',{
+        pagename: 'See Members'
+    });
+});
 
+app.get('/registeruser',(req,res)=>{
+    res.render('registeruser',{
+        pagename: 'Add Members'
+    });
+});
+
+app.get('/edadmin',(req,res)=>{
+    res.render('edadmin',{
+        pagename: 'Admin Panel'
+    });
+});
 
 
 app.listen(port,()=>{
