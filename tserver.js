@@ -12,13 +12,15 @@ var Request = require('tedious').Request;
 const port = process.env.PORT || 8888;
 
 var app = express();
-app.use(express.static(__dirname+'/views'));
+
+ app.use(express.static(__dirname+'/views'));
 app.use(express.static(__dirname+'/adminViews'));
 
 
 //connectToDb();
 var config = 
 {
+
   user:'root',
   password: 'hf4pe@l2msh',
   host: 'localhost', // update me
@@ -30,10 +32,12 @@ connection.connect(function(err){
     if(err) console.error(err);
     else console.log('Connected!');
 });
+
 /*connection.query("INSERT INTO Users(user_name,user_password) VALUES('aboodaz','"+md5(2143906)+"');",function(err){
     if(err) console.error(err);
     else console.log('Row done');
 });*/
+
 app.use(require('body-parser')());
 app.use(express.static(__dirname+'/views'));
 hbs.registerPartials(__dirname + '/html/partials');
@@ -91,6 +95,10 @@ app.get('/signup',(req,res)=>{
     });
 });
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> f11cc0b461e8dbd6cdfd715460b097773c404a69
 app.get('/seeusers',(req,res)=>{
     res.render('seeusers',{
         pagename: 'See Members'
@@ -107,7 +115,9 @@ app.get('/edadmin',(req,res)=>{
     res.render('edadmin',{
         pagename: 'Admin Panel'
     });
+<<<<<<< HEAD
 });*/
+
 app.post('/signup',function(req,res){
     console.log('Info Taken');
     //console.log('Form (form querystring): ' + req.query.);
