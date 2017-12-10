@@ -20,7 +20,7 @@ app.use(express.static(__dirname+'/adminViews'));
 var config = 
 {
   user:'root',
-  password: '',
+  password: 'hf4pe@l2msh',
   host: 'localhost', // update me
   database:'gym',
   port:3306
@@ -30,7 +30,10 @@ connection.connect(function(err){
     if(err) console.error(err);
     else console.log('Connected!');
 });
-
+/*connection.query("INSERT INTO Users(user_name,user_password) VALUES('aboodaz','"+md5(2143906)+"');",function(err){
+    if(err) console.error(err);
+    else console.log('Row done');
+});*/
 app.use(require('body-parser')());
 app.use(express.static(__dirname+'/views'));
 hbs.registerPartials(__dirname + '/html/partials');
@@ -82,7 +85,7 @@ app.get('/signup',(req,res)=>{
         pagename: 'sign up'
     });
 });
-app.get('/admin',(req,res)=>{
+/*app.get('/admin',(req,res)=>{
     res.render('admin',{
         pagename: 'Admin Panel'
     });
@@ -104,7 +107,7 @@ app.get('/edadmin',(req,res)=>{
     res.render('edadmin',{
         pagename: 'Admin Panel'
     });
-});
+});*/
 app.post('/signup',function(req,res){
     console.log('Info Taken');
     //console.log('Form (form querystring): ' + req.query.);
@@ -129,21 +132,52 @@ app.post('/login',function(req,res){
     var passEncr = md5(pass);
     console.log('Your name is --> '+name + ', and the password is --> '+pass);
     console.log('Password after encr is --> ' + passEncr);
-    request = new Request(
-        "SELECT * FROM Users WHERE User_Name ='"+name+"' AND User_password ='"+passEncr+"';",
-           function(err, rowCount, rows) 
-              {
-                  if(err) console.error(err);
-                  console.log(rowCount + ' row(s) selected');
-              }
-          );    
-     request.on('row', function(columns) {
-            columns.forEach(function(column) {
-                console.log("%s\t%s", column.metadata.colName, column.value);
-             });
-                 });         
-     connection.execSql(request);
-    res.end('Thank you');
+    connection.query("SELECT user_id from users where user_name = '"+name+"' and user_password = '"+passEncr+"';",
+        function(err,result){            
+            if(err) {
+                console.error(err);
+                res.end('Error Info');
+            }
+            else {
+                console.log(result); // test the lenght .
+                if(result.length == 0){
+                    console.log('Error Info');
+                    res.end('Error Info');
+                } 
+                else {
+                    var id = result[0].user_id;
+                    console.log(result[0].user_id);
+                    if(id == 1){
+                        res.render('admin');
+                        app.get('/admin',(req,res)=>{
+                            res.render('admin',{
+                                pagename: 'Admin Panel'
+                            });
+                        });
+                        
+                        app.get('/seeusers',(req,res)=>{
+                            res.render('seeusers',{
+                                pagename: 'See Members'
+                            });
+                        });
+                        
+                        app.get('/registeruser',(req,res)=>{
+                            res.render('registeruser',{
+                                pagename: 'Add Members'
+                            });
+                        });
+                        
+                        app.get('/edadmin',(req,res)=>{
+                            res.render('edadmin',{
+                                pagename: 'Admin Panel'
+                            });
+                        });
+                    }
+                   // res.end('Thank you');
+                }
+            }
+        });
+    //res.end('Thank you');
 })
 
 
