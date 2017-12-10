@@ -3,7 +3,7 @@ module.exports = function addEmp(name,pass,connection){
     
     
     request = new Request(
-        "INSERT INTO Users VALUES('"+name+"','"+pass+"');",
+        "INSERT INTO Users VALUES('1,"+name+"','"+pass+"');",
            function(err, rowCount, rows) 
               {
                   if(err) console.error(err);

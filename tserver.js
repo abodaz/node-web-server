@@ -12,16 +12,16 @@ var Request = require('tedious').Request;
 const port = process.env.PORT || 8888;
 
 var app = express();
-<<<<<<< HEAD
+
  app.use(express.static(__dirname+'/views'));
 app.use(express.static(__dirname+'/adminViews'));
-=======
+
 
 //connectToDb();
 var config = 
 {
-  userName: 'mahmoud', // update me
-  password: '748254', // update me
+  userName: 'sqlabod', // update me
+  password: '', // update me
   server: 'localhost', // update me
   options: 
      {
@@ -31,11 +31,10 @@ var config =
      }
 };
 var connection = new Connection(config);
-
+//console.log(connection);
 
 app.use(require('body-parser')());
 app.use(express.static(__dirname+'/views'));
->>>>>>> b92435722d03c159b21bb49a6750027262a3b33a
 hbs.registerPartials(__dirname + '/html/partials');
 app.set('view engine', 'hbs');
 app.use((req, res, next) => {
@@ -91,7 +90,7 @@ app.get('/admin',(req,res)=>{
     });
 });
 
-<<<<<<< HEAD
+
 app.get('/seeusers',(req,res)=>{
     res.render('seeusers',{
         pagename: 'See Members'
@@ -109,7 +108,7 @@ app.get('/edadmin',(req,res)=>{
         pagename: 'Admin Panel'
     });
 });
-=======
+
 app.post('/signup',function(req,res){
     console.log('Info Taken');
     //console.log('Form (form querystring): ' + req.query.);
@@ -150,7 +149,6 @@ app.post('/login',function(req,res){
      connection.execSql(request);
     res.end('Thank you');
 })
->>>>>>> b92435722d03c159b21bb49a6750027262a3b33a
 
 
 app.listen(port,()=>{
