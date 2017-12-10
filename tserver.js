@@ -4,7 +4,7 @@ var fs = require('fs');
 var md5 = require('md5');
 const addEmp = require('./routes/addEmp');
 
-// var mysql = require('mysql');
+var mysql = require('mysql');
 
 var Connection = require('tedious').Connection;
 var Request = require('tedious').Request;
@@ -12,14 +12,19 @@ var Request = require('tedious').Request;
 const port = process.env.PORT || 8888;
 
 var app = express();
+<<<<<<< HEAD
 
  app.use(express.static(__dirname+'/views'));
+=======
+app.use(express.static(__dirname+'/views'));
+>>>>>>> f11cc0b461e8dbd6cdfd715460b097773c404a69
 app.use(express.static(__dirname+'/adminViews'));
 
 
 //connectToDb();
 var config = 
 {
+<<<<<<< HEAD
   userName: 'sqlabod', // update me
   password: '', // update me
   server: 'localhost', // update me
@@ -32,6 +37,19 @@ var config =
 };
 var connection = new Connection(config);
 //console.log(connection);
+=======
+  user:'root',
+  password: '',
+  host: 'localhost', // update me
+  database:'gym',
+  port:3306
+};
+var connection = mysql.createConnection(config);
+connection.connect(function(err){
+    if(err) console.error(err);
+    else console.log('Connected!');
+});
+>>>>>>> f11cc0b461e8dbd6cdfd715460b097773c404a69
 
 app.use(require('body-parser')());
 app.use(express.static(__dirname+'/views'));
@@ -90,7 +108,10 @@ app.get('/admin',(req,res)=>{
     });
 });
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> f11cc0b461e8dbd6cdfd715460b097773c404a69
 app.get('/seeusers',(req,res)=>{
     res.render('seeusers',{
         pagename: 'See Members'
@@ -108,7 +129,10 @@ app.get('/edadmin',(req,res)=>{
         pagename: 'Admin Panel'
     });
 });
+<<<<<<< HEAD
 
+=======
+>>>>>>> f11cc0b461e8dbd6cdfd715460b097773c404a69
 app.post('/signup',function(req,res){
     console.log('Info Taken');
     //console.log('Form (form querystring): ' + req.query.);
