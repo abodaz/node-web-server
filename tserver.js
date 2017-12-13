@@ -5,9 +5,7 @@ var md5 = require('md5');
 const addEmp = require('./routes/addEmp');
 var logEmp = require('./routes/login');
 var mysql = require('mysql');
-var async = require('async');
-var Connection = require('tedious').Connection;
-var Request = require('tedious').Request;
+
 
 const port = process.env.PORT || 8888;
 
@@ -50,10 +48,10 @@ app.use((req, res, next) => {
     next();
 });
 
-// app.use((req,res,next)=>{
-//     res.render('break');
-//    // next();
-// });
+/*app.use((req,res,next)=>{
+    res.render('break');
+   // next();
+});*/
 
 hbs.registerHelper('year', () => {
     return new Date().getFullYear();
@@ -65,17 +63,17 @@ app.get('/', (req, res) => {
     });    
 });
 
-app.get('/about', (req, res) => {
-    res.render('about', {
-        pagename: 'about'
-    });
-});
+// app.get('/about', (req, res) => {
+//     res.render('about', {
+//         pagename: 'about'
+//     });
+// });
 
-app.get('/project',(req,res)=>{
-    res.render('project',{
-        pagename: 'projcet'
-    });
-});
+// app.get('/project',(req,res)=>{
+//     res.render('project',{
+//         pagename: 'projcet'
+//     });
+// });
 
 app.get('/login',(req,res)=>{
     res.render('login',{
@@ -88,30 +86,45 @@ app.get('/signup',(req,res)=>{
         pagename: 'sign up'
     });
 });
-/*app.get('/admin',(req,res)=>{
-    res.render('admin',{
-        pagename: 'Admin Panel'
-    });
-});
+// app.get('/admin',(req,res)=>{
+//     res.render('admin',{
+//         pagename: 'Admin Panel'
+//     });
+// });
 
 app.get('/seeusers',(req,res)=>{
     res.render('seeusers',{
         pagename: 'See Members'
     });
 });
+// app.get('/seebranches',(req,res)=>{
+//     res.render('seebranches',{
+//         pagename: 'Our Branches'
+//     });
+// });
 
-app.get('/registeruser',(req,res)=>{
-    res.render('registeruser',{
-        pagename: 'Add Members'
-    });
-});
+// app.get('/addBM',(req,res)=>{
+//     res.render('addBM',{
+//         pagename: 'Add Branch Manager'
+//     });
+// });
 
-app.get('/edadmin',(req,res)=>{
-    res.render('edadmin',{
-        pagename: 'Admin Panel'
-    });
-<<<<<<< HEAD
-});*/
+// app.get('/edadmin',(req,res)=>{
+//     res.render('edadmin',{
+//         pagename: 'Admin Panel'
+//     });
+// });
+// app.get('/singleBranch',(req,res)=>{
+//     res.render('singleBranch',{
+//         pagename: 'Branch'
+//     });
+// })
+// app.get('/addB',(req,res)=>{
+//     res.render('addB',{
+//         pagename: 'Add Branch'
+//     });
+// });
+
 
 app.post('/signup',function(req,res){
     console.log('Info Taken');
@@ -174,15 +187,15 @@ app.post('/login',function(req,res){
                             });
                         });
                         
-                        app.get('/seeusers',(req,res)=>{
-                            res.render('seeusers',{
-                                pagename: 'See Members'
+                        app.get('/seebranches',(req,res)=>{
+                            res.render('seebranches',{
+                                pagename: 'Our Branches'
                             });
                         });
                         
-                        app.get('/registeruser',(req,res)=>{
-                            res.render('registeruser',{
-                                pagename: 'Add Members'
+                        app.get('/addBM',(req,res)=>{
+                            res.render('addBM',{
+                                pagename: 'Add Branch Manager'
                             });
                         });
                         
@@ -236,6 +249,7 @@ app.post('/login',function(req,res){
                             function(err,result){
                                 if(err) throw err;
                                 console.log('Update employee table');
+                                //getEmp(req,res,id,admin);
                             });
                             };
                             
@@ -244,6 +258,17 @@ app.post('/login',function(req,res){
                             getEmp(req,res,id,admin);
                             //res.redirect('/edadmin');
                         });
+                        app.get('/singleBranch',(req,res)=>{
+                            res.render('singleBranch',{
+                                pagename: 'Branch'
+                            });
+                        });
+                        app.get('/addB',(req,res)=>{
+                            res.render('addB',{
+                                pagename: 'Add Branch'
+                            });
+                        });
+                        
                     }
                    // res.end('Thank you');
                 }
