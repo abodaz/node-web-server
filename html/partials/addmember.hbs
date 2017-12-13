@@ -5,19 +5,19 @@
             <label>FirstName</label>
         </div>
         <div class="col-lg-3">
-            <input class="form-control" />
+            <input class="form-control" name="first_name"/>
         </div>
         <div class="col-lg-1 ">
             <label>LastName</label>
         </div>
         <div class="col-lg-3">
-            <input class="form-control" />
+            <input class="form-control" name="last_name" />
         </div>
         <div class="col-lg-1">
             <label>UserName</label>
         </div>
         <div class="col-lg-3">
-            <input class="form-control" />
+            <input class="form-control" name="user_name"/>
         </div>
     </div>
     <div class="row">
@@ -26,44 +26,49 @@
             <label>Email</label>
         </div>
         <div class="col-lg-3">
-            <input type="email" class="form-control" />
+            <input type="email" class="form-control" name="user_email" />
         </div>
         <div class="col-lg-1 ">
             <label>Password</label>
         </div>
         <div class="col-lg-3">
-            <input type="password" class="form-control" />
+            <input type="password" class="form-control" name="user_password"/>
         </div>
     </div>
     <div class="row">
         <p></p>
         <div class="col-lg-1">
-            <label>FirstDate</label>
+            <label>PhoneNO.</label>
         </div>
         <div class="col-lg-3">
             <input class="form-control" />
         </div>
-        <div class="col-lg-1 ">
-            <label>lasthDate</label>
+        <div class="col-lg-1">
+            <label>Branch</label>
         </div>
         <div class="col-lg-3">
-            <input class="form-control" />
+            <select name="select"> <!--Supplement an id here instead of using 'name'-->
+            <option value="value1">Gaza Branch</option> 
+            <option value="value2" selected>Remal Branch</option>
+            <option value="value3">Rafah Branch</option>
+            </select>
         </div>
+        
     </div>
     <div class="row">
         <p></p>
         <div class="col-lg-1">
-            <label>FirstDate</label>
+            <label>Birthday</label>
         </div>
         <div class="col-lg-3">
-            {{>dateSel}}
+            <input type="date" name="Bday">
         </div>
 
         <div class="col-lg-1">
-            <label>LastDate</label>
+            <label>HireDate</label>
         </div>
         <div class="col-lg-3">
-            {{>dateSel}}
+            <input type="date" name="Hday">
         </div>
     </div>
 </div>
