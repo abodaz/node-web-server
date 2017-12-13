@@ -3,9 +3,9 @@ var hbs = require('hbs');
 var fs = require('fs');
 var md5 = require('md5');
 const addEmp = require('./routes/addEmp');
-
+var logEmp = require('./routes/login');
 var mysql = require('mysql');
-
+var async = require('async');
 var Connection = require('tedious').Connection;
 var Request = require('tedious').Request;
 
@@ -20,7 +20,6 @@ app.use(express.static(__dirname+'/adminViews'));
 //connectToDb();
 var config = 
 {
-
   user:'root',
   password: 'hf4pe@l2msh',
   host: 'localhost', // update me
@@ -95,10 +94,6 @@ app.get('/signup',(req,res)=>{
     });
 });
 
-<<<<<<< HEAD
-
-=======
->>>>>>> f11cc0b461e8dbd6cdfd715460b097773c404a69
 app.get('/seeusers',(req,res)=>{
     res.render('seeusers',{
         pagename: 'See Members'
@@ -140,9 +135,11 @@ app.post('/login',function(req,res){
     var pass = req.body.password;
 
     var passEncr = md5(pass);
+    
     console.log('Your name is --> '+name + ', and the password is --> '+pass);
     console.log('Password after encr is --> ' + passEncr);
-    connection.query("SELECT user_id from users where user_name = '"+name+"' and user_password = '"+passEncr+"';",
+    var id ;
+    connection.query("SELECT user_id,user_name from users where user_name = '"+name+"' and user_password = '"+passEncr+"';",
         function(err,result){            
             if(err) {
                 console.error(err);
@@ -156,6 +153,18 @@ app.post('/login',function(req,res){
                 } 
                 else {
                     var id = result[0].user_id;
+                    var admin = {};
+                    //admin.user_name = result[0].user_name;
+                    //console.log(admin.user_name+"   " +result[0].user_name );
+                    /*connection.query("SELECT * from employee where user_id = "+id,function(err,result){
+                        if(err) console.error(err);
+                        else {
+                            console.log('Done data retrieved!');
+                            admin.fname = result[0].first_name;
+                            admin.lname = result[0].last_name;
+                            admin.email = result[0].email;
+                        }
+                    });*/
                     console.log(result[0].user_id);
                     if(id == 1){
                         res.render('admin');
@@ -177,25 +186,98 @@ app.post('/login',function(req,res){
                             });
                         });
                         
-                        app.get('/edadmin',(req,res)=>{
-                            res.render('edadmin',{
-                                pagename: 'Admin Panel'
+                        app.get('/edadmin',(req,res)=>{  
+                            console.log('Enter edadmin');
+                            getEmp(req,res,id,admin);  
+                            /*connection.query("SELECT * from employee E,users U where U.user_id = "+id+" and E.user_id = U.user_id "
+                            ,function(err,result){
+                                if(err) console.error(err);
+                                else {
+                                    
+                                        console.log('Done data retrieved!');
+                                        //console.log(result);    
+                                        admin.user_name = result[0].user_name;
+                                        admin.fname = result[0].first_name;
+                                        admin.lname = result[0].last_name;
+                                        admin.email = result[0].email;
+                                        console.log(admin);
+                                        res.render('edadmin',{
+                                            pagename: 'Admin Panel',first_name: admin.fname, last_name: admin.lname,
+                                            user_name : admin.user_name, user_email : admin.email
+                                        });
+                                    
+                                    
+                                }
+                            }); 
+                            */
+                            
+                                           
+                            
+                        });
+                        app.post('/edadmin',function(req,res){ // WHEN CLICK COMMIT BUTTON..
+                            console.log('HI');
+                            var fname = req.body.fname;
+                            var lname = req.body.lname;
+                            var uname = req.body.user_name;
+                            var uemail = req.body.user_email;
+                            var errors = [];
+                            if(! fname) errors.push('first name missed');
+                            if(! lname) errors.push('last name missed');
+                            if(! uname) errors.push('user name missed');
+                            if(! uemail) errors.push('user email missed');
+                            console.log(errors);
+                            if(! errors.length){ // ADD update for employee table .................. ya dog
+                                connection.query("UPDATE users set user_name = '"+uname+"' WHERE user_id = "+id,
+                                function(err,result){
+                                    if(err) throw err;
+                                    console.log('Update user table');
+                                });
+                                connection.query("UPDATE employee set first_name ='"+fname+"', last_name ='"+lname+"', email ='"+uemail+"' WHERE user_id ="+id,
+                            function(err,result){
+                                if(err) throw err;
+                                console.log('Update employee table');
                             });
+                            };
+                            
+                            //res.redirect(req.get('referer'));
+                            
+                            getEmp(req,res,id,admin);
+                            //res.redirect('/edadmin');
                         });
                     }
                    // res.end('Thank you');
                 }
             }
         });
+        
     //res.end('Thank you');
-})
+});
 
 
 app.listen(port,()=>{
     console.log(`server port is ${port}`)
 });
 
-
+function getEmp(req,res,id,admin){    
+    connection.query("SELECT * from employee E,users U where U.user_id = "+id+" and E.user_id = U.user_id "
+    ,function(err,result){
+        if(err) console.error(err);
+        else {
+            
+                console.log('Done data retrieved!');
+                //console.log(result);    
+                admin.user_name = result[0].user_name;
+                admin.fname = result[0].first_name;
+                admin.lname = result[0].last_name;
+                admin.email = result[0].email;
+                console.log(admin);
+                res.render('edadmin',{
+                    pagename: 'Admin Panel',first_name: admin.fname, last_name: admin.lname,
+                    user_name : admin.user_name, user_email : admin.email
+                }); 
+        }
+    });     
+};
 
  
 
