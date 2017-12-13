@@ -48,10 +48,10 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use((req,res,next)=>{
-    res.render('break');
-   // next();
-});
+// app.use((req,res,next)=>{
+//     res.render('break');
+//    // next();
+// });
 
 hbs.registerHelper('year', () => {
     return new Date().getFullYear();
