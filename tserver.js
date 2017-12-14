@@ -3,9 +3,10 @@ var hbs = require('hbs');
 var fs = require('fs');
 var md5 = require('md5');
 const addEmp = require('./routes/addEmp');
+const addbranch = require('./routes/addBrnch');
 var logEmp = require('./routes/login');
 var mysql = require('mysql');
-
+var addmng = require('./routes/addBmng');
 
 const port = process.env.PORT || 8888;
 
@@ -22,7 +23,8 @@ var config =
   password: 'hf4pe@l2msh',
   host: 'localhost', // update me
   database:'gym',
-  port:3306
+  port:3306,
+  multipleStatements: true
 };
 var connection = mysql.createConnection(config);
 connection.connect(function(err){
@@ -188,9 +190,10 @@ app.post('/login',function(req,res){
                         });
                         
                         app.get('/seebranches',(req,res)=>{
-                            res.render('seebranches',{
+                            seebranches(res);
+                           /* res.render('seebranches',{
                                 pagename: 'Our Branches'
-                            });
+                            });*/
                         });
                         
                         app.get('/addBM',(req,res)=>{
@@ -264,9 +267,48 @@ app.post('/login',function(req,res){
                             });
                         });
                         app.get('/addB',(req,res)=>{
+                            getmanagers(res);
+                            /*console.log('Options --> ' + mngoptions);
                             res.render('addB',{
-                                pagename: 'Add Branch'
-                            });
+                                pagename: 'Add Branch',managers : mngoptions 
+                            });*/
+                        });
+
+                        app.post('/addB',function(req,res){
+                            console.log('You try to add new branch, let us see the result :)');
+                            var branch = {};
+                            var errors = [];
+                            branch.name = req.body.branch_name;
+                            branch.number = req.body.branch_number;
+                            branch.country = req.body.country;
+                            branch.city = req.body.city;
+                            branch.street = req.body.street;
+                            branch.mng = req.body.select;
+                            console.log(req.body);
+
+                            addbranch(branch,connection);
+                            res.end('You have added a branch');
+                        });
+
+                        app.post('/addBM',function(req,res){
+                            console.log('You try to add new branch manager, let us see the result :)');
+                            var manager ={};
+                            var user = {};
+                            var errors = [];
+                            var pass = md5(req.body.user_password);
+                            user.username = req.body.user_name;
+                            user.password = pass;
+                            manager.ssn = req.body.ssn;
+                            manager.fname = req.body.first_name;
+                            manager.lname = req.body.last_name;
+                            manager.email = req.body.user_email;
+                            manager.bdate = req.body.Bday;
+                            manager.hdate = req.body.Hday;
+                            manager.phone = req.body.phone;
+                            manager.salary = req.body.msalary;
+                            console.log(req.body);
+                            addmng(manager,user,connection);
+                            res.end('You have added a branch manager');
                         });
                         
                     }
@@ -305,4 +347,63 @@ function getEmp(req,res,id,admin){
 };
 
  
+function getmanagers(res){
+   var querymng = "SELECT * from employee AS E INNER JOIN manager AS M ON E.ssn = M.manager_ssn;";
+   var querycountries = "SELECT country_name from country;";
+   var querycities = "SELECT city_name from city;";
+    var query = querymng + querycountries + querycities;
+   connection.query(query,function(err,result){
+       if(err) throw err;
+       var mngoptions = ''; var mngnames=[];
+       var cntoptions = ''; var cntnames=[];
+       var cityoptions = ''; var citynames=[];
+       for(var i=0; i<result[0].length;i++){
+            mngnames.push(result[0][i].first_name+" "+result[0][i].last_name);
+            mngoptions+='<option value="'+mngnames[i]+'">'+mngnames[i]+'</option>';
+       }
+       for(var i=0;i<result[1].length;i++){
+        cntnames.push(result[1][i].country_name);
+        cntoptions+='<option value="'+cntnames[i]+'">'+cntnames[i]+'</option>';
+       }
+       for(var i=0;i<result[2].length;i++){
+        citynames.push(result[2][i].city_name);
+        cityoptions+='<option value="'+citynames[i]+'">'+citynames[i]+'</option>';
+       }
+       var name = "mahmoud ali";
+       var names = [];
+       names = name.split(" ");
+       console.log(names);
+       //console.log(result[0][0]);
+       console.log(cityoptions);
+       console.log(cntoptions);
+       res.render('addB',{
+        pagename: 'Add Branch',managers : mngoptions ,countries:cntoptions, cities : cityoptions
+    });
+   })   
+}
 
+function seebranches(res){
+    var query = "SELECT * FROM  branch AS B, city AS C, country AS CO, Employee E ";
+        query += "WHERE B.city_id = C.city_id and B.country_id = CO.country_id and E.ssn = B.manager_ssn;";
+
+    connection.query(query,function(err,result){
+        if(err) throw err;
+        console.log(result);
+        var branchopt = "";
+        for(var i=0;i<result.length;i++){
+            branchopt += '<tr> <td>'+result[i].branch_number+'</td>';
+            branchopt += '<td>'+result[i].branch_name+'</td>';
+            branchopt += '<td>'+result[i].city_name+'</td>';
+            branchopt += '<td>'+result[i].country_name+'</td>';
+            branchopt += '<td>'+result[i].street+'</td>';
+            branchopt += '<td>'+result[i].first_name +" "+result[i].last_name+'</td>';
+            branchopt += '<td><a href="singleBranch">';
+            branchopt += '<div style="height:100%;width:100%">';
+            branchopt +='Check</div> </a></td> </tr>';
+        };
+
+        res.render('seebranches',{
+            pagename: 'Our Branches', branches: branchopt
+        });
+    });
+}

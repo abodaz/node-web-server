@@ -5,7 +5,13 @@
             <label>Add Branch Name</label>
         </div>
         <div class="col-lg-4">
-            <input class="form-control" name="braunch_name"/>
+            <input class="form-control" name="branch_name"/>
+        </div>
+        <div class="col-lg-1">
+            <label>Branch Number</label>
+        </div>
+        <div class="col-lg-1">
+            <input class="form-control" name="branch_number" />
         </div>
     </div>
     <div class="row">
@@ -14,13 +20,17 @@
             <label>Country</label>
         </div>
         <div class="col-lg-3">
-            <input class="form-control" name="country" />
+            <select name="country"> <!--Supplement an id here instead of using 'name'-->           
+            {{{countries}}}
+            </select>
         </div>
         <div class="col-lg-1">
             <label>City</label>
         </div>
         <div class="col-lg-3">
-            <input class="form-control" name="city" />
+            <select name="city"> <!--Supplement an id here instead of using 'name'-->           
+            {{{cities}}}
+            </select>
         </div>
     </div>
     <div class="row">
@@ -39,10 +49,8 @@
             <label>Select Maneger</label>
         </div>
         <div class="col-lg-4">
-            <select name="select"> <!--Supplement an id here instead of using 'name'-->
-            <option value="value1">abod Azzami</option> 
-            <option value="value2">mahmoud Jayyab</option>
-            <option value="value3">ahmed Qaddora</option>
+            <select name="select"> <!--Supplement an id here instead of using 'name'-->           
+            {{{managers}}}
             </select>
         </div>
 </div>
