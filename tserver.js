@@ -12,6 +12,8 @@ var addtrainer =require('./routes/addtrainer');
 const port = process.env.PORT || 8888;
 var _mngagar_ssn='';
 var _id;
+var addaddress = require('./routes/addaddress');
+var addtool = require('./routes/addtool');
 var app = express();
 
 app.use(express.static(__dirname + '/views'));
@@ -197,7 +199,9 @@ app.get('/signup', (req, res) => {
 //     });
 // });
 
-
+app.get('/clerk',function(req,res){
+    res.render('clerk');
+});
 app.post('/signup', function (req, res) {
     console.log('Info Taken');
     //console.log('Form (form querystring): ' + req.query.);
@@ -309,7 +313,10 @@ app.post('/login', function (req, res) {
                                         }
                                     })
                                 }
-                            };
+                            } else {
+                                console.log(errors);
+                            }
+                            
                             
                             //res.redirect(req.get('referer'));
                             
@@ -325,6 +332,28 @@ app.post('/login', function (req, res) {
                             getmanagers(res);                            
                         });
 
+                        app.get('/addAddress',function(req,res){
+                            res.render('addAddress');
+                        });
+                        app.post('/addAddress',function(req,res){
+                            console.log(req.body);
+                            var address = {};
+                            address.country = req.body.country;
+                            address.city = req.body.city;
+                            address.postal = req.body.Postal;
+                            var errors = [];
+                            if(! address.country) errors.push('country name missed!');
+                            if(! address.city) errors.push('city name missed!');
+                            if(! address.postal) errors.push('postal code missed!');
+
+                            if(! errors.length){
+                                addaddress(address,connection);
+                                res.end('Ok mashi');
+                            } else {
+                                console.log(errors);
+                                res.end(''+errors);
+                            }
+                        })
                         app.post('/addB',function(req,res){
                             console.log('You try to add new branch, let us see the result :)');
                             var branch = {};
@@ -336,9 +365,19 @@ app.post('/login', function (req, res) {
                             branch.street = req.body.street;
                             branch.mng = req.body.select;
                             console.log(req.body);
-
-                            addbranch(branch,connection);
-                            res.end('You have added a branch');
+                            if(! branch.name) errors.push('branch name missed!');
+                            if(! branch.number) errors.push('branch number missed!');
+                            if(! branch.country) errors.push('country name missed!');
+                            if(! branch.city) errors.push('city name missed!');
+                            if(! branch.street) errors.push('street name missed!');
+                            if(! branch.mng) errors.push('manager missed!');
+                            if(! errors.length) {
+                                addbranch(branch,connection);
+                                res.end('You have added a branch');
+                            } else {
+                                console.log(errors);
+                            }
+                            
                         });
 
                         app.post('/addBM',function(req,res){
@@ -399,7 +438,32 @@ app.post('/login', function (req, res) {
                                 app.get('/edmanager', (req, res) => {                                   
                                    getManager(res,id);                                   
                                 });
+                                app.get('/addTools',function(req,res){
+                                    res.render('addTools');
+                                })
 
+                                app.post('/addTools',function(req,res){
+                                    console.log(req.body);
+                                    console.log(req.body);
+                                    var tool = {};
+                                    tool.name = req.body.name;
+                                    tool.number = req.body.number;
+                                    tool.company = req.body.company;
+                                    tool.price = req.body.price;
+                                    var errors = [];
+                                    if(! tool.name) errors.push('tool name missed!');
+                                    if(! tool.price) errors.push('tool price missed!');
+                                    if(! tool.number) errors.push('tool number missed!');
+                                    if(! tool.company) errors.push('tool company missed!');
+                                    if(! errors.length){
+                                        addtool(tool,connection);
+                                        res.end('Ok mashi');
+                                    } else {
+                                        console.log(errors);
+                                        res.end(''+errors);
+                                    }
+                                    //res.end('Ok mashi');
+                                })
                                 app.post('/edmanager',function(req,res){
                                     editmanager(res,req,id);
                                 });

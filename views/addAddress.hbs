@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+{{>adminheader}}
+
+<body>
+
+
+
+    <div id="wrapper">
+        {{>adminPar}}
+
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>Add Address</h2>
+                        <form action="/addAddress" method="POST">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <p></p>
+                                <div class="col-lg-1">
+                                    <label>Country</label>
+                                </div>
+                                <div class="col-lg-3">
+                                    <input class="form-control" name="country" />
+                                </div>
+                                <div class="col-lg-1">
+                                    <label>City</label>
+                                </div>
+                                <div class="col-lg-3">
+                                    <input class="form-control" name="city" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <p></p>
+                                <div class="col-lg-2">
+                                    <label>Postal Code</label>
+                                </div>
+                                <div class="col-lg-3">
+                                    <input class="form-control" name="Postal" />
+                                </div>
+
+                            </div>
+                            
+
+                                <div class="col-lg-12 col-md-6">
+                                    <label class="col-lg-9 col-md-3"></label>
+                                    <button class="col-lg-2" type="submit">Add Address</button>
+                                </div>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            {{>adminfooter}}
+
+
+</body>
+
+</html>

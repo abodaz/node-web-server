@@ -1,0 +1,168 @@
+﻿<!DOCTYPE html>
+<html>
+{{>adminheader}}
+
+<body>
+
+
+
+    <div id="wrapper">
+        {{>managerPar}}
+
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>Add Tools And Machines</h2>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 ">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#clean" data-toggle="tab">Clean Tools</a>
+                        </li>
+                        <li class="">
+                            <a href="#gym" data-toggle="tab">GYM Machines</a>
+                        </li>
+
+
+                    </ul>
+                    <div class="tab-content">
+
+                        <div class="tab-pane active" id="clean">
+                            <h3>Add Clean Tool</h3>
+                        <form action="/addTools" method="POST">
+                            <div class="col-lg-12">
+
+
+                                <div class="row">
+                                    <p></p>
+                                    <div class="col-lg-1">
+                                        <label>Name</label>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <input class="form-control" name="name" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <p></p>
+                                    <div class="col-lg-1">
+                                        <label>Price</label>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <input class="form-control" name="price"/>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label>$</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <p></p>
+                                    <div class="col-lg-1">
+                                        <label>Number</label>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <input class="form-control" name="number" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <p></p>
+                                    <div class="col-lg-1">
+                                        <label>company</label>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <input class="form-control" name="company"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <p></p>
+                                    <div class="col-lg-2">
+                                        <label>Date of Add</label>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <input type="date" name="Bday">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+
+                                <div class="col-lg-12 col-md-6">
+                                    <label class="col-lg-9 col-md-3"></label>
+                                    <button class="col-lg-2" type="sunbmit">Add Tool</button>
+                                </div>
+                            </div>
+
+
+                        </form>
+                        </div>
+
+                        <div class="tab-pane fade" id="gym">
+                            <h3>Add GYM Machine</h3>
+
+                            <div class="col-lg-12">
+
+
+                                <div class="row">
+                                    <p></p>
+                                    <div class="col-lg-1">
+                                        <label>Name</label>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <input class="form-control" name="first_name" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <p></p>
+                                    <div class="col-lg-1">
+                                        <label>Price</label>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <input class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <p></p>
+                                    <div class="col-lg-1">
+                                        <label>Number</label>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <input class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <p></p>
+                                    <div class="col-lg-2">
+                                        <label>Date of Add</label>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <input type="date" name="Bday">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+
+                                <div class="col-lg-12 col-md-6">
+                                    <label class="col-lg-9 col-md-3"></label>
+                                    <button class="col-lg-2" type="button">Add Machine</button>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            {{>adminfooter}}
+
+
+</body>
+
+</html>
