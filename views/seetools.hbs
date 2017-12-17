@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    {{>adminheader}}
+<body>
+     
+           
+          
+    <div id="wrapper">
+        {{>managerPar}}
+
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper" >
+          <div id="page-inner">
+                <div class="col-lg-12 ">
+                    <ul class="nav nav-tabs">
+                        <li class="active"> 
+                            <a href="#clean" data-toggle="tab" >See Clean Tools</a>
+                        </li>
+                        <li class="">
+                            <a href="#gym" data-toggle="tab">See GYM Machine</a>
+                        </li>
+
+                    </ul>
+                     <div class="tab-content">
+                        
+                            <div class="tab-pane fade active in" id="clean">
+                                <h3>Clean Tools</h3>
+                                <h5>Table Of Our Clean Tools</h5>
+                                {{>tooltable}}
+                            </div>
+
+                            <div class="tab-pane fade" id="gym">
+                                <h3>GYM Machines</h3>
+                                <h5>Table Of Our GYM Machine</h5>
+                                {{>tooltable}}
+                               
+
+                            </div>
+                            
+                    </div>
+                </div>
+                </div>
+		</div>
+        </div>
+	</div>
+	</div>
+                
+    {{>adminfooter}}
+    
+   
+</body>
+</html>

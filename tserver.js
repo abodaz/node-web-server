@@ -120,6 +120,11 @@ app.get('/signup', (req, res) => {
 //         pagename: 'Add Branch'
 //     });
 // });
+// app.get('/addAddress', (req, res) => {
+//     res.render('addAddress', {
+//         pagename: 'Add Address'
+//     });
+// });
 // //manager
 // app.get('/manager', (req, res) => {
 //     res.render('manager', {
@@ -134,6 +139,21 @@ app.get('/signup', (req, res) => {
 // app.get('/addEmp', (req, res) => {
 //     res.render('addEmp', {
 //         pagename: 'Add Employees'
+//     });
+// });
+// app.get('/addEmp', (req, res) => {
+//     res.render('addEmp', {
+//         pagename: 'Add Employees'
+//     });
+// });
+// app.get('/addTools', (req, res) => {
+//     res.render('addTools', {
+//         pagename: 'Add Tools'
+//     });
+// });
+// app.get('/seetools', (req, res) => {
+//     res.render('seetools', {
+//         pagename: 'See Tools'
 //     });
 // });
 // app.get('/edmanager', (req, res) => {
@@ -209,7 +229,7 @@ app.post('/login', function (req, res) {
                     var id = result[0].user_id;
                     console.log(result[0].user_id);
                     if (id == 1) // for the only Admin
-                     {
+                    {
                         res.render('admin');
                         app.get('/admin', (req, res) => {
                             res.render('admin', {
@@ -228,23 +248,28 @@ app.post('/login', function (req, res) {
                                 pagename: 'Add Branch Manager'
                             });
                         });
-
-                        app.get('/edadmin', (req, res) => {
-                            res.render('edadmin', {
-                                pagename: 'Admin Panel'
-                            });
-                        });
-                        app.get('/singleBranch', (req, res) => {
-                            res.render('singleBranch', {
-                                pagename: 'Branch'
-                            });
-                        });
                         app.get('/addB', (req, res) => {
                             res.render('addB', {
                                 pagename: 'Add Branch'
                             });
-                        });
 
+                            app.get('/singleBranch', (req, res) => {
+                                res.render('singleBranch', {
+                                    pagename: 'Branch'
+                                });
+                            });
+                            app.get('/addAddress', (req, res) => {
+                                res.render('addAddress', {
+                                    pagename: 'Add Address'
+                                });
+                            });
+
+                            app.get('/edadmin', (req, res) => {
+                                res.render('edadmin', {
+                                    pagename: 'Admin Panel'
+                                });
+                            });
+                        });
                     }
 
                     if (id == 2) // for the first Branch Manager
@@ -266,6 +291,17 @@ app.post('/login', function (req, res) {
                                 pagename: 'Add Employees'
                             });
                         });
+
+                        app.get('/addTools', (req, res) => {
+                            res.render('addTools', {
+                                pagename: 'Add Tools'
+                            });
+                        });
+                        app.get('/seetools', (req, res) => {
+                            res.render('seetools', {
+                                pagename: 'See Tools'
+                            });
+                        });
                         app.get('/edmanager', (req, res) => {
                             res.render('edmanager', {
                                 pagename: 'Edit Infomations'
@@ -273,8 +309,8 @@ app.post('/login', function (req, res) {
                         });
 
                     }
-                     if (id == 3) // for the first clerk
-                     {
+                    if (id == 3) // for the first clerk
+                    {
                         app.get('/clerk', (req, res) => {
                             res.render('clerk', {
                                 pagename: 'Clerk Page'
@@ -300,7 +336,7 @@ app.post('/login', function (req, res) {
                                 pagename: 'Commit Members'
                             });
                         });
-                     }
+                    }
                     // res.end('Thank you');
                 }
             }
