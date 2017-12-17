@@ -7,13 +7,15 @@ const addbranch = require('./routes/addBrnch');
 var logEmp = require('./routes/login');
 var mysql = require('mysql');
 var addmng = require('./routes/addBmng');
-
+var addclerk = require('./routes/addclerk');
+var addtrainer =require('./routes/addtrainer');
 const port = process.env.PORT || 8888;
-
+var _mngagar_ssn='';
+var _id;
 var app = express();
 
- app.use(express.static(__dirname+'/views'));
-app.use(express.static(__dirname+'/adminViews'));
+app.use(express.static(__dirname + '/views'));
+app.use(express.static(__dirname + '/adminViews'));
 
 
 //connectToDb();
@@ -24,11 +26,12 @@ var config =
   host: 'localhost', // update me
   database:'gym',
   port:3306,
+  dateStrings: 'date',
   multipleStatements: true
 };
 var connection = mysql.createConnection(config);
-connection.connect(function(err){
-    if(err) console.error(err);
+connection.connect(function (err) {
+    if (err) console.error(err);
     else console.log('Connected!');
 });
 
@@ -38,7 +41,7 @@ connection.connect(function(err){
 });*/
 
 app.use(require('body-parser')());
-app.use(express.static(__dirname+'/views'));
+app.use(express.static(__dirname + '/views'));
 hbs.registerPartials(__dirname + '/html/partials');
 app.set('view engine', 'hbs');
 app.use((req, res, next) => {
@@ -46,7 +49,7 @@ app.use((req, res, next) => {
     var log = `time: ${now} ${req.method} ${req.url}`;
 
     console.log('Hi Iam jayyab :)');
-    console.log('sever.log'+log +'\n');
+    console.log('sever.log' + log + '\n');
     next();
 });
 
@@ -62,7 +65,7 @@ hbs.registerHelper('year', () => {
 app.get('/', (req, res) => {
     res.render('home', {
         pagename: 'home'
-    });    
+    });
 });
 
 // app.get('/about', (req, res) => {
@@ -77,61 +80,128 @@ app.get('/', (req, res) => {
 //     });
 // });
 
-app.get('/login',(req,res)=>{
-    res.render('login',{
+app.get('/login', (req, res) => {
+    res.render('login', {
         pagename: 'login'
     });
 });
 
-app.get('/signup',(req,res)=>{
-    res.render('signup',{
+app.get('/signup', (req, res) => {
+    res.render('signup', {
         pagename: 'sign up'
     });
 });
-// app.get('/admin',(req,res)=>{
-//     res.render('admin',{
+// //admin
+// app.get('/admin', (req, res) => {
+//     res.render('admin', {
 //         pagename: 'Admin Panel'
 //     });
 // });
 
-app.get('/seeusers',(req,res)=>{
+
+
+
+
+
+
+
+/*app.get('/seeusers',(req,res)=>{
     res.render('seeusers',{
         pagename: 'See Members'
     });
-});
+});*/
+
+
+
+
+
+
+
+
+
+
+
+
 // app.get('/seebranches',(req,res)=>{
 //     res.render('seebranches',{
 //         pagename: 'Our Branches'
 //     });
 // });
 
-// app.get('/addBM',(req,res)=>{
-//     res.render('addBM',{
+// app.get('/addBM', (req, res) => {
+//     res.render('addBM', {
 //         pagename: 'Add Branch Manager'
 //     });
 // });
 
-// app.get('/edadmin',(req,res)=>{
-//     res.render('edadmin',{
+// app.get('/edadmin', (req, res) => {
+//     res.render('edadmin', {
 //         pagename: 'Admin Panel'
 //     });
 // });
-// app.get('/singleBranch',(req,res)=>{
-//     res.render('singleBranch',{
+// app.get('/singleBranch', (req, res) => {
+//     res.render('singleBranch', {
 //         pagename: 'Branch'
 //     });
 // })
-// app.get('/addB',(req,res)=>{
-//     res.render('addB',{
+// app.get('/addB', (req, res) => {
+//     res.render('addB', {
 //         pagename: 'Add Branch'
+//     });
+// });
+// //manager
+// app.get('/manager', (req, res) => {
+//     res.render('manager', {
+//         pagename: 'Manager Page'
+//     });
+// })
+// app.get('/seeusers', (req, res) => {
+//     res.render('seeusers', {
+//         pagename: 'Our Users'
+//     });
+// });
+// app.get('/addEmp', (req, res) => {
+//     res.render('addEmp', {
+//         pagename: 'Add Employees'
+//     });
+// });
+// app.get('/edmanager', (req, res) => {
+//     res.render('edmanager', {
+//         pagename: 'Edit Infomations'
+//     });
+// });
+// //clerk
+// app.get('/clerk', (req, res) => {
+//     res.render('clerk', {
+//         pagename: 'Clerk Page'
+//     });
+// });
+// app.get('/edclerk', (req, res) => {
+//     res.render('edclerk', {
+//         pagename: 'Clerk Page'
+//     });
+// });
+// app.get('/seeMemb', (req, res) => {
+//     res.render('seeMemb', {
+//         pagename: 'Our Members'
+//     });
+// });
+// app.get('/addMemb', (req, res) => {
+//     res.render('addMemb', {
+//         pagename: 'Add Members'
+//     });
+// });
+// app.get('/commitMemb', (req, res) => {
+//     res.render('commitMemb', {
+//         pagename: 'Commit Members'
 //     });
 // });
 
 
-app.post('/signup',function(req,res){
+app.post('/signup', function (req, res) {
     console.log('Info Taken');
     //console.log('Form (form querystring): ' + req.query.);
-    var name = req.body.name;    
+    var name = req.body.name;
     var pass = req.body.password;
     console.log('name : ' + req.body.name);
     console.log('password : ' + req.body.password);
@@ -139,12 +209,12 @@ app.post('/signup',function(req,res){
 
     console.log('Pass after md5 --> ' + passEncr);
     res.end('Thank you');
-    
-    addEmp(name,passEncr,connection);  
+
+    addEmp(name, passEncr, connection);
     //res.redirect(303,'File');  
 });
 
-app.post('/login',function(req,res){
+app.post('/login', function (req, res) {
     console.log('You have entered info to log in -----');
     var name = req.body.username;
     var pass = req.body.password;
@@ -154,7 +224,7 @@ app.post('/login',function(req,res){
     console.log('Your name is --> '+name + ', and the password is --> '+pass);
     console.log('Password after encr is --> ' + passEncr);
     var id ;
-    connection.query("SELECT user_id,user_name from users where user_name = '"+name+"' and user_password = '"+passEncr+"';",
+    connection.query("SELECT user_id,user_name,user_type from users where user_name = '"+name+"' and user_password = '"+passEncr+"';",
         function(err,result){            
             if(err) {
                 console.error(err);
@@ -162,73 +232,38 @@ app.post('/login',function(req,res){
             }
             else {
                 console.log(result); // test the lenght .
-                if(result.length == 0){
+                if (result.length == 0) {
                     console.log('Error Info');
                     res.end('Error Info');
-                } 
+                }
                 else {
                     var id = result[0].user_id;
-                    var admin = {};
-                    //admin.user_name = result[0].user_name;
-                    //console.log(admin.user_name+"   " +result[0].user_name );
-                    /*connection.query("SELECT * from employee where user_id = "+id,function(err,result){
-                        if(err) console.error(err);
-                        else {
-                            console.log('Done data retrieved!');
-                            admin.fname = result[0].first_name;
-                            admin.lname = result[0].last_name;
-                            admin.email = result[0].email;
-                        }
-                    });*/
+                    _id = id;
+                    var admin = {};                   
                     console.log(result[0].user_id);
-                    if(id == 1){
+                    if (id == 1) // for the only Admin
+                     {
                         res.render('admin');
-                        app.get('/admin',(req,res)=>{
-                            res.render('admin',{
+                        app.get('/admin', (req, res) => {
+                            res.render('admin', {
                                 pagename: 'Admin Panel'
                             });
                         });
                         
                         app.get('/seebranches',(req,res)=>{
                             seebranches(res);
-                           /* res.render('seebranches',{
-                                pagename: 'Our Branches'
-                            });*/
                         });
-                        
-                        app.get('/addBM',(req,res)=>{
-                            res.render('addBM',{
+
+                        app.get('/addBM', (req, res) => {
+                            res.render('addBM', {
                                 pagename: 'Add Branch Manager'
                             });
                         });
                         
                         app.get('/edadmin',(req,res)=>{  
                             console.log('Enter edadmin');
-                            getEmp(req,res,id,admin);  
-                            /*connection.query("SELECT * from employee E,users U where U.user_id = "+id+" and E.user_id = U.user_id "
-                            ,function(err,result){
-                                if(err) console.error(err);
-                                else {
-                                    
-                                        console.log('Done data retrieved!');
-                                        //console.log(result);    
-                                        admin.user_name = result[0].user_name;
-                                        admin.fname = result[0].first_name;
-                                        admin.lname = result[0].last_name;
-                                        admin.email = result[0].email;
-                                        console.log(admin);
-                                        res.render('edadmin',{
-                                            pagename: 'Admin Panel',first_name: admin.fname, last_name: admin.lname,
-                                            user_name : admin.user_name, user_email : admin.email
-                                        });
-                                    
-                                    
-                                }
-                            }); 
-                            */
-                            
-                                           
-                            
+                            getEmp(res,id,admin);  
+                             
                         });
                         app.post('/edadmin',function(req,res){ // WHEN CLICK COMMIT BUTTON..
                             console.log('HI');
@@ -253,25 +288,41 @@ app.post('/login',function(req,res){
                                 if(err) throw err;
                                 console.log('Update employee table');
                                 //getEmp(req,res,id,admin);
-                            });
+                                });
+                                var oldpass = req.body.oldpass;
+                                var newpass = req.body.newpass;
+                                if(oldpass && newpass) {
+                                    console.log('You try to change password');
+                                    connection.query("SELECT user_password from users where user_id = "+id+";",function(err,result){
+                                        if(err) throw err;
+                                        var correctpass = result[0].user_password;
+                                        var passEnc = md5(oldpass);
+                                        console.log(correctpass);
+                                        console.log(passEnc);
+                                        if(correctpass == passEnc) {
+                                            console.log('Yes the password is true');
+                                            var newpassword = md5(newpass);
+                                            connection.query("UPDATE users set user_password ='"+newpassword+"' WHERE user_id ="+id+";",function(err){
+                                                if(err) throw err;
+                                                console.log('New password updated');
+                                            })
+                                        }
+                                    })
+                                }
                             };
                             
                             //res.redirect(req.get('referer'));
                             
-                            getEmp(req,res,id,admin);
+                            getEmp(res,id,admin);
                             //res.redirect('/edadmin');
                         });
-                        app.get('/singleBranch',(req,res)=>{
-                            res.render('singleBranch',{
+                        app.get('/singleBranch', (req, res) => {
+                            res.render('singleBranch', {
                                 pagename: 'Branch'
                             });
                         });
                         app.get('/addB',(req,res)=>{
-                            getmanagers(res);
-                            /*console.log('Options --> ' + mngoptions);
-                            res.render('addB',{
-                                pagename: 'Add Branch',managers : mngoptions 
-                            });*/
+                            getmanagers(res);                            
                         });
 
                         app.post('/addB',function(req,res){
@@ -310,9 +361,162 @@ app.post('/login',function(req,res){
                             addmng(manager,user,connection);
                             res.end('You have added a branch manager');
                         });
-                        
+
                     }
-                   // res.end('Thank you');
+
+                    if (result[0].user_type = 'E') // for the first Branch Manager
+                    {
+                        console.log('Employee logged in -->');
+                        query = "SELECT job_id,ssn from employee where user_id="+result[0].user_id;
+                        connection.query(query,function(err,result){
+                            if(err) throw err;
+                            var job_id = result[0].job_id;
+                            var mng_ssn = result[0].ssn;
+                            _mngagar_ssn = mng_ssn;
+                            console.log(job_id + " ssn for manager is --> " + mng_ssn);
+                            if(job_id == 100){ // branch manager
+                                res.render('manager');
+                                app.get('/manager', (req, res) => {
+                                    res.render('manager', {
+                                        pagename: 'Manager'
+                                    });
+                                })
+                                app.get('/seeusers', (req, res) => {
+                                    //var ssn = result[0].ssn;
+                                   /* console.log('HERE !!!!!!!!!!!!!!>>>>>>>>>>>>');
+                                    console.log('SSN manager before sent is --> '+ssn);*/
+                                    seemanagerusers(res,result);
+                                    /*res.render('seeusers', {
+                                        pagename: 'Our Users'
+                                    });*/
+                                });
+        
+                                app.get('/addEmp', (req, res) => {
+                                    res.render('addEmp', {
+                                        pagename: 'Add Employees'
+                                    });
+                                });
+                                app.get('/edmanager', (req, res) => {                                   
+                                   getManager(res,id);                                   
+                                });
+
+                                app.post('/edmanager',function(req,res){
+                                    editmanager(res,req,id);
+                                });
+                                app.post('/addclerk',function(req,res){
+                                    console.log('you try to add new clerk let us see the result');
+                                    var clerk = {};
+                                    var user = {};
+                                    var errors = [];
+                                    var pass = md5(req.body.user_password);
+                                    user.username = req.body.user_name;
+                                    user.password = pass;
+                                    clerk.ssn = req.body.ssn;
+                                    clerk.fname = req.body.first_name;
+                                    clerk.lname = req.body.last_name;
+                                    clerk.email = req.body.user_email;
+                                    clerk.bdate = req.body.Bday;
+                                    clerk.hdate = req.body.Hday;
+                                    clerk.phone = req.body.phone;
+                                    clerk.salary = req.body.salary;
+                                    console.log(clerk);
+                                    console.log(user);
+                                    console.log(ssn);
+                                    addclerk(clerk,user,ssn,connection);
+                                    res.end('You have added new clerk :)');
+                                });
+                                app.post('/addtrainer',function(req,res){
+                                    console.log('you try to add new trainer let us see the result');
+                                    var trainer = {};
+                                    var user = {};
+                                    var errors = []; // check for errors
+                                    var pass = md5(req.body.user_password);
+                                    user.username = req.body.user_name;
+                                    user.password = pass;
+                                    trainer.ssn = req.body.ssn;
+                                    trainer.fname = req.body.first_name;
+                                    trainer.lname = req.body.last_name;
+                                    trainer.email = req.body.user_email;
+                                    trainer.bdate = req.body.Bday;
+                                    trainer.hdate = req.body.Hday;
+                                    trainer.phone = req.body.phone;
+                                    trainer.salary = req.body.salary;
+                                    console.log(trainer);
+                                    console.log(user);
+                                    addtrainer(trainer,user,ssn,connection);
+                                    res.end('You have added new trainer :)');
+                                })
+                            }
+                            else if(job_id == 200){ // trainer
+
+                            }
+
+                            else if(job_id == 300){ // cleaner
+
+                            }
+
+                            else if(job_id == 400){ // clerk
+
+                            }
+                        });
+                        /*res.render('manager');
+                        app.get('/manager', (req, res) => {
+                            res.render('manager', {
+                                pagename: 'Manager'
+                            });
+                        })
+                        app.get('/seeusers', (req, res) => {
+                            res.render('seeusers', {
+                                pagename: 'Our Users'
+                            });
+                        });
+
+                        app.get('/addEmp', (req, res) => {
+                            res.render('addEmp', {
+                                pagename: 'Add Employees'
+                            });
+                        });
+                        app.get('/edmanager', (req, res) => {
+                            res.render('edmanager', {
+                                pagename: 'Edit Infomations'
+                            });
+                        });*/
+
+                    }
+                    else if(result[0].user_type = 'M'){ // For members ...
+
+                    }
+
+
+                     if (id == 3) // for the first clerk
+                     {
+                        app.get('/clerk', (req, res) => {
+                            res.render('clerk', {
+                                pagename: 'Clerk Page'
+                            });
+                        });
+                        app.get('/edclerk', (req, res) => {
+                            res.render('edclerk', {
+                                pagename: 'Clerk Page'
+                            });
+                        });
+                        app.get('/seeMemb', (req, res) => {
+                            res.render('seeMemb', {
+                                pagename: 'Our Members'
+                            });
+                        });
+                        app.get('/addMemb', (req, res) => {
+                            res.render('addMemb', {
+                                pagename: 'Add Members'
+                            });
+                        });
+                        app.get('/commitMemb', (req, res) => {
+                            res.render('commitMemb', {
+                                pagename: 'Commit Members'
+                            });
+                        });
+                     }
+                    // res.end('Thank you');
                 }
             }
         });
@@ -321,12 +525,83 @@ app.post('/login',function(req,res){
 });
 
 
-app.listen(port,()=>{
+app.listen(port, () => {
     console.log(`server port is ${port}`)
 });
 
-function getEmp(req,res,id,admin){    
-    connection.query("SELECT * from employee E,users U where U.user_id = "+id+" and E.user_id = U.user_id "
+function editmanager(res,req,id){
+    var fname = req.body.fname;
+    var lname = req.body.lname;
+    var uname = req.body.user_name;
+    var uemail = req.body.user_email;
+    var errors = [];
+    if(! fname) errors.push('first name missed');
+    if(! lname) errors.push('last name missed');
+    if(! uname) errors.push('user name missed');
+    if(! uemail) errors.push('user email missed');
+    console.log(errors);
+    if(! errors.length){ // ADD update for employee table .................. ya dog
+        connection.query("UPDATE users set user_name = '"+uname+"' WHERE user_id = "+_id,
+        function(err,result){
+            if(err) throw err;
+            console.log('Update user table');
+        });
+        connection.query("UPDATE employee set first_name ='"+fname+"', last_name ='"+lname+"', email ='"+uemail+"' WHERE user_id ="+_id,
+        function(err,result){
+        if(err) throw err;
+        console.log('Update employee table');
+        
+        });
+        var oldpass = req.body.oldpass;
+        var newpass = req.body.newpass;
+        if(oldpass && newpass) {
+            console.log('You try to change password');
+            connection.query("SELECT user_password from users where user_id = "+_id+";",function(err,result){
+                if(err) throw err;
+                var correctpass = result[0].user_password;
+                var passEnc = md5(oldpass);
+                console.log(correctpass);
+                console.log(passEnc);
+                if(correctpass == passEnc) {
+                    console.log('Yes the password is true');
+                    var newpassword = md5(newpass);
+                    connection.query("UPDATE users set user_password ='"+newpassword+"' WHERE user_id ="+_id+";",function(err){
+                        if(err) throw err;
+                        console.log('New password updated');
+                    })
+                }
+            })
+        }
+    };
+    res.redirect('edmanager');
+}
+
+
+function getManager(res,id){
+    connection.query("SELECT * from employee E,users U where U.user_id = "+_id+" and E.user_id = U.user_id "
+    ,function(err,result){
+        if(err) console.error(err);
+        else {
+            console.log('Done data retrieved!');
+            //console.log(result);   
+            var manager = {}; 
+            manager.user_name = result[0].user_name;
+            manager.fname = result[0].first_name;
+            manager.lname = result[0].last_name;
+            manager.email = result[0].email;     
+                  
+            console.log(manager);
+            res.render('edmanager', {
+                pagename: 'Edit Infomations',first_name: manager.fname, last_name: manager.lname,
+                user_name : manager.user_name, email : manager.email
+            });
+            
+        }
+    })
+}
+function getEmp(res,id,admin){    
+    console.log(id);
+    connection.query("SELECT * from employee E,users U where U.user_id = "+_id+" and E.user_id = U.user_id "
     ,function(err,result){
         if(err) console.error(err);
         else {
@@ -406,4 +681,81 @@ function seebranches(res){
             pagename: 'Our Branches', branches: branchopt
         });
     });
+}
+
+function seemanagerusers(res,result){
+    //var ssnmng = result[0].ssn;
+    console.log('SSN manager after sent is --> '+_mngagar_ssn);
+    var querybn = "SELECT branch_number from branch where manager_ssn = '" + _mngagar_ssn +"';";
+    connection.query(querybn,function(err,result){
+        if(err) throw err;
+        var brnum = result[0].branch_number;
+        console.log("The branch number is ----> "+brnum);
+       var querytr = "SELECT trainer_id from trainer where branch_number = "+brnum;
+       connection.query(querytr,function(err,result){
+           if(err) throw err;
+           var trs = [];
+           for(var i=0;i<result.length;i++){
+               trs.push(result[i].trainer_id);
+           }
+           if(! trs) throw "No trainers ....";
+           
+           var queryemp = "SELECT * from users AS U,employee AS E where ssn IN ("+trs+") and U.user_id = E.user_id;"; 
+           connection.query(queryemp,function(err,result){
+               if(err) throw err;
+               console.log('Done we get employees');
+               console.log(result);
+               var transopt = "";
+               for(var i=0;i<result.length;i++){
+                   transopt += '<tr> <td>'+result[i].ssn+'</td>';
+                   transopt += '<td>'+result[i].first_name+'</td>';
+                   transopt += '<td>'+result[i].last_name+'</td>';
+                   transopt += '<td>'+result[i].user_name+'</td>';
+                   transopt += '<td>'+result[i].email+'</td>';
+                   transopt += '<td>'+result[i].date_of_birth+'</td>';
+                   transopt += '<td>'+result[i].date_of_hire+'</td>';
+                   transopt +=' </tr>';
+                   
+               };
+               
+              /* res.render('seeusers', {
+                   pagename: 'Our Users', trainers : transopt
+               });*/
+
+               var queryck = "SELECT clerk_id from clerk where branch_number = "+brnum;
+               connection.query(queryck,function(err,result){
+                   if(err) throw err;
+                   var clrs = [];
+                   for(var i=0;i<result.length;i++){
+                       clrs.push(result[i].clerk_id);
+                   }
+                   if(! clrs) throw "No trainers ....";
+                   var queryemp = "SELECT * from users AS U,employee AS E where ssn IN ("+clrs+") and U.user_id = E.user_id;"; 
+                   connection.query(queryemp,function(err,result){
+                       if(err) throw err;
+                       console.log('Done we get employees');
+                       console.log(result);
+                       var clerksopt = "";
+                       for(var i=0;i<result.length;i++){
+                           clerksopt += '<tr> <td>'+result[i].ssn+'</td>';
+                           clerksopt += '<td>'+result[i].first_name+'</td>';
+                           clerksopt += '<td>'+result[i].last_name+'</td>';
+                           clerksopt += '<td>'+result[i].user_name+'</td>';
+                           clerksopt += '<td>'+result[i].email+'</td>';
+                           clerksopt += '<td>'+result[i].date_of_birth+'</td>';
+                           clerksopt += '<td>'+result[i].date_of_hire+'</td>';
+                           clerksopt +=' </tr>';
+                       };
+           
+                       res.render('seeusers', {
+                           pagename: 'Our Users', clerks : clerksopt,trainers :transopt
+                       });
+                   })
+               })
+           })           
+       })
+    }) 
+}
+function seemembers(res){
+
 }

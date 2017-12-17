@@ -7,8 +7,8 @@
 
 
     <div id="wrapper">
-        {{>adminPar}} 
-        
+        {{>managerPar}}
+
         <!-- /. NAV SIDE  -->
         <div id="page-wrapper">
             <div id="page-inner">
@@ -19,20 +19,20 @@
                 </div>
 
                 <div class="col-lg-12 ">
-                    <form class="commit" action="/edadmin" method="POST">
+                    <form action="/edmanager" method="POST">
                     <div class="row">
                         <p></p>
                         <div class="col-lg-1">
                             <label>FirstName</label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="fname" value="{{first_name}}" class="form-control" />
+                            <input value="{{first_name}}" class="form-control" name="fname" />
                         </div>
                         <div class="col-lg-1 ">
                             <label>LastName</label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="lname" value="{{last_name}}" class="form-control" />
+                            <input value="{{last_name}}" class="form-control" name="lname" />
                         </div>
                     </div>
                     <div class="row">
@@ -41,13 +41,13 @@
                             <label>UserName</label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="user_name" value="{{user_name}}" class="form-control" />
+                            <input value="{{user_name}}" class="form-control" name="user_name"/>
                         </div>
                         <div class="col-lg-1">
                             <label>Email</label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="user_email" value="{{user_email}}" type="email" class="form-control" />
+                            <input value="{{email}}" type="email" class="form-control" name="user_email"/>
                         </div>
                     </div>
                     <div class="row">
@@ -68,14 +68,12 @@
                     <div class="row">
 
                         <div class="col-lg-12 col-md-6">
-                            
-                                <label class="col-lg-9 col-md-3"></label>
-                                <button class="col-lg-2" type="submit" >Commit</button>
-                           
+                            <label class="col-lg-9 col-md-3"></label>
+                            <button class="col-lg-2" type="submit">Commit</button>
                         </div>
                     </div>
 
-                 </form>
+                    </form>
                 </div>
             </div>
         </div>

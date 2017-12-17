@@ -2,7 +2,7 @@ module.exports = function addmng(manager, user,connection){
     var job_id = '100';
     query = "INSERT INTO employee VALUES('"+manager.ssn+"','"+manager.fname+"','"+manager.lname+"','"+manager.email+"','"+manager.phone+"','"+manager.bdate+"','"+manager.hdate+"','"+job_id+"',";
 
-    connection.query("INSERT INTO USERS(user_name,user_password) VALUES('"+user.username+"','"+user.password+"');",
+    connection.query("INSERT INTO USERS(user_name,user_password,user_type) VALUES('"+user.username+"','"+user.password+"','E');",
         function(err){
             if(err) throw err;
             console.log("new user added");
