@@ -197,7 +197,27 @@ app.get('/commitMemb', (req, res) => {
         pagename: 'Commit Members'
     });
 });
-
+//member
+app.get('/memb', (req, res) => {
+    res.render('memb', {
+        pagename: 'Member Page'
+    });
+})
+app.get('/edmemb', (req, res) => {
+    res.render('edmemb', {
+        pagename: 'edit Info'
+    });
+})
+app.get('/seeinfo', (req, res) => {
+    res.render('seeinfo', {
+        pagename: 'My Info'
+    });
+})
+app.get('/addinfo', (req, res) => {
+    res.render('addinfo', {
+        pagename: 'Add Info'
+    });
+})
 
 app.post('/signup', function (req, res) {
     console.log('Info Taken');
