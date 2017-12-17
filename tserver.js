@@ -86,107 +86,117 @@ app.get('/signup', (req, res) => {
         pagename: 'sign up'
     });
 });
-// //admin
-// app.get('/admin', (req, res) => {
-//     res.render('admin', {
-//         pagename: 'Admin Panel'
-//     });
-// });
+//admin
+app.get('/admin', (req, res) => {
+    res.render('admin', {
+        pagename: 'Admin Panel'
+    });
+});
 
-// app.get('/seebranches', (req, res) => {
-//     res.render('seebranches', {
-//         pagename: 'Our Branches'
-//     });
-// });
+app.get('/seebranches', (req, res) => {
+    res.render('seebranches', {
+        pagename: 'Our Branches'
+    });
+});
 
-// app.get('/addBM', (req, res) => {
-//     res.render('addBM', {
-//         pagename: 'Add Branch Manager'
-//     });
-// });
+app.get('/addBM', (req, res) => {
+    res.render('addBM', {
+        pagename: 'Add Branch Manager'
+    });
+});
 
-// app.get('/edadmin', (req, res) => {
-//     res.render('edadmin', {
-//         pagename: 'Admin Panel'
-//     });
-// });
-// app.get('/singleBranch', (req, res) => {
-//     res.render('singleBranch', {
-//         pagename: 'Branch'
-//     });
-// })
-// app.get('/addB', (req, res) => {
-//     res.render('addB', {
-//         pagename: 'Add Branch'
-//     });
-// });
-// app.get('/addAddress', (req, res) => {
-//     res.render('addAddress', {
-//         pagename: 'Add Address'
-//     });
-// });
-// //manager
-// app.get('/manager', (req, res) => {
-//     res.render('manager', {
-//         pagename: 'Manager Page'
-//     });
-// })
-// app.get('/seeusers', (req, res) => {
-//     res.render('seeusers', {
-//         pagename: 'Our Users'
-//     });
-// });
-// app.get('/addEmp', (req, res) => {
-//     res.render('addEmp', {
-//         pagename: 'Add Employees'
-//     });
-// });
-// app.get('/addEmp', (req, res) => {
-//     res.render('addEmp', {
-//         pagename: 'Add Employees'
-//     });
-// });
-// app.get('/addTools', (req, res) => {
-//     res.render('addTools', {
-//         pagename: 'Add Tools'
-//     });
-// });
-// app.get('/seetools', (req, res) => {
-//     res.render('seetools', {
-//         pagename: 'See Tools'
-//     });
-// });
-// app.get('/edmanager', (req, res) => {
-//     res.render('edmanager', {
-//         pagename: 'Edit Infomations'
-//     });
-// });
-// //clerk
-// app.get('/clerk', (req, res) => {
-//     res.render('clerk', {
-//         pagename: 'Clerk Page'
-//     });
-// });
-// app.get('/edclerk', (req, res) => {
-//     res.render('edclerk', {
-//         pagename: 'Clerk Page'
-//     });
-// });
-// app.get('/seeMemb', (req, res) => {
-//     res.render('seeMemb', {
-//         pagename: 'Our Members'
-//     });
-// });
-// app.get('/addMemb', (req, res) => {
-//     res.render('addMemb', {
-//         pagename: 'Add Members'
-//     });
-// });
-// app.get('/commitMemb', (req, res) => {
-//     res.render('commitMemb', {
-//         pagename: 'Commit Members'
-//     });
-// });
+app.get('/edadmin', (req, res) => {
+    res.render('edadmin', {
+        pagename: 'Admin Panel'
+    });
+});
+app.get('/singleBranch', (req, res) => {
+    res.render('singleBranch', {
+        pagename: 'Branch'
+    });
+})
+app.get('/addB', (req, res) => {
+    res.render('addB', {
+        pagename: 'Add Branch'
+    });
+});
+app.get('/addAddress', (req, res) => {
+    res.render('addAddress', {
+        pagename: 'Add Address'
+    });
+});
+//manager
+app.get('/manager', (req, res) => {
+    res.render('manager', {
+        pagename: 'Manager Page'
+    });
+})
+app.get('/seeusers', (req, res) => {
+    res.render('seeusers', {
+        pagename: 'Our Users'
+    });
+});
+app.get('/addEmp', (req, res) => {
+    res.render('addEmp', {
+        pagename: 'Add Employees'
+    });
+});
+app.get('/addEmp', (req, res) => {
+    res.render('addEmp', {
+        pagename: 'Add Employees'
+    });
+});
+app.get('/addTools', (req, res) => {
+    res.render('addTools', {
+        pagename: 'Add Tools'
+    });
+});
+app.get('/seetools', (req, res) => {
+    res.render('seetools', {
+        pagename: 'See Tools'
+    });
+});
+app.get('/edmanager', (req, res) => {
+    res.render('edmanager', {
+        pagename: 'Edit Infomations'
+    });
+});
+app.get('/memship', (req, res) => {
+    res.render('memship', {
+        pagename: 'Membership'
+    });
+});
+app.get('/activity', (req, res) => {
+    res.render('activity', {
+        pagename: 'Activity'
+    });
+});
+//clerk
+app.get('/clerk', (req, res) => {
+    res.render('clerk', {
+        pagename: 'Clerk Page'
+    });
+});
+app.get('/edclerk', (req, res) => {
+    res.render('edclerk', {
+        pagename: 'Clerk Page'
+    });
+});
+app.get('/seeMemb', (req, res) => {
+    res.render('seeMemb', {
+        pagename: 'Our Members'
+    });
+});
+app.get('/addMemb', (req, res) => {
+    res.render('addMemb', {
+        pagename: 'Add Members'
+    });
+});
+app.get('/commitMemb', (req, res) => {
+    res.render('commitMemb', {
+        pagename: 'Commit Members'
+    });
+});
 
 
 app.post('/signup', function (req, res) {
