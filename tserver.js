@@ -192,9 +192,9 @@ app.get('/addMemb', (req, res) => {
         pagename: 'Add Members'
     });
 });
-app.get('/commitMemb', (req, res) => {
-    res.render('commitMemb', {
-        pagename: 'Commit Members'
+app.get('/checkB', (req, res) => {
+    res.render('checkB', {
+        pagename: 'Check Branch'
     });
 });
 //member
@@ -218,6 +218,11 @@ app.get('/addinfo', (req, res) => {
         pagename: 'Add Info'
     });
 })
+app.get('/delmemb', (req, res) => {
+    res.render('delmemb', {
+        pagename: 'Delete Member'
+    });
+});
 
 app.post('/signup', function (req, res) {
     console.log('Info Taken');
@@ -299,6 +304,12 @@ app.post('/login', function (req, res) {
                                     pagename: 'Admin Panel'
                                 });
                             });
+
+                            app.get('/checkB', (req, res) => {
+                                res.render('checkB', {
+                                    pagename: 'Check Branch'
+                                });
+                            });
                         });
                     }
 
@@ -361,9 +372,9 @@ app.post('/login', function (req, res) {
                                 pagename: 'Add Members'
                             });
                         });
-                        app.get('/commitMemb', (req, res) => {
-                            res.render('commitMemb', {
-                                pagename: 'Commit Members'
+                        app.get('/delmemb', (req, res) => {
+                            res.render('delmemb', {
+                                pagename: 'Delete Member'
                             });
                         });
                     }
