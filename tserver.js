@@ -8,6 +8,7 @@ var logEmp = require('./routes/login');
 var mysql = require('mysql');
 var addmng = require('./routes/addBmng');
 var addclerk = require('./routes/addclerk');
+var addcleaner = require('./routes/addcleaner');
 var addtrainer =require('./routes/addtrainer');
 const port = process.env.PORT || 8888;
 var _mngagar_ssn='';
@@ -93,12 +94,12 @@ app.get('/signup', (req, res) => {
         pagename: 'sign up'
     });
 });
-// //admin
-// app.get('/admin', (req, res) => {
-//     res.render('admin', {
-//         pagename: 'Admin Panel'
-//     });
-// });
+//admin
+app.get('/admin', (req, res) => {
+    res.render('admin', {
+        pagename: 'Admin Panel'
+    });
+});
 
 
 
@@ -130,11 +131,11 @@ app.get('/signup', (req, res) => {
 //     });
 // });
 
-// app.get('/addBM', (req, res) => {
-//     res.render('addBM', {
-//         pagename: 'Add Branch Manager'
-//     });
-// });
+app.get('/addBM', (req, res) => {
+    res.render('addBM', {
+        pagename: 'Add Branch Manager'
+    });
+});
 
 // app.get('/edadmin', (req, res) => {
 //     res.render('edadmin', {
@@ -441,22 +442,29 @@ app.post('/login', function (req, res) {
                                 app.get('/addTools',function(req,res){
                                     res.render('addTools');
                                 })
-
+                                app.get('/seetools',function(req,res){
+                                    seetools(res,_mngagar_ssn);
+                                    /*res.render('seetools',{
+                                        tools : ''
+                                    });*/
+                                })
                                 app.post('/addTools',function(req,res){
-                                    console.log(req.body);
                                     console.log(req.body);
                                     var tool = {};
                                     tool.name = req.body.name;
                                     tool.number = req.body.number;
                                     tool.company = req.body.company;
                                     tool.price = req.body.price;
+                                    tool.date = req.body.Bday;
                                     var errors = [];
                                     if(! tool.name) errors.push('tool name missed!');
                                     if(! tool.price) errors.push('tool price missed!');
                                     if(! tool.number) errors.push('tool number missed!');
                                     if(! tool.company) errors.push('tool company missed!');
+                                    if(! tool.date) errors.push('date is missed');
                                     if(! errors.length){
-                                        addtool(tool,connection);
+                                        console.log('manager want to add tool --> ' + _mngagar_ssn);
+                                        addtool(tool,_mngagar_ssn,connection);
                                         res.end('Ok mashi');
                                     } else {
                                         console.log(errors);
@@ -486,7 +494,7 @@ app.post('/login', function (req, res) {
                                     console.log(clerk);
                                     console.log(user);
                                     console.log(ssn);
-                                    addclerk(clerk,user,ssn,connection);
+                                    addclerk(clerk,user,_mngagar_ssn,connection);
                                     res.end('You have added new clerk :)');
                                 });
                                 app.post('/addtrainer',function(req,res){
@@ -507,8 +515,35 @@ app.post('/login', function (req, res) {
                                     trainer.salary = req.body.salary;
                                     console.log(trainer);
                                     console.log(user);
-                                    addtrainer(trainer,user,ssn,connection);
+                                    addtrainer(trainer,user,_mngagar_ssn,connection);
                                     res.end('You have added new trainer :)');
+                                });
+                                app.get('/activity',function(req,res){
+                                    seeactivity(res,_mngagar_ssn);
+                                   /* res.render('activity',{
+                                    });*/
+                                })
+                                app.post('/activity',function(req,res){
+                                    console.log(req.body);
+                                    var activity = {};
+                                    var errors = [];
+                                    activity.name = req.body.name;
+                                    activity.type = req.body.type;
+                                    if(! activity.name) errors.push('No activity name');
+                                    if(! activity.type) errors.push('No activity type');
+                                    var addactivity = require('./routes/addactivity');
+                                    if(! errors.length){
+                                        console.log('manager want to add activity --> ' + _mngagar_ssn);
+                                        addactivity(activity,_mngagar_ssn,connection);
+                                        res.end('Ok mashi');
+                                    } else {
+                                        console.log(errors);
+                                        res.end(''+errors);
+                                    }                                    
+                                })
+                                
+                                app.get('/memship',function(req,res){
+                                    res.render('memship');
                                 })
                             }
                             else if(job_id == 200){ // trainer
@@ -520,7 +555,32 @@ app.post('/login', function (req, res) {
                             }
 
                             else if(job_id == 400){ // clerk
-
+                                res.render('clerk');
+                                app.get('/clerk', (req, res) => {
+                                    res.render('clerk', {
+                                        pagename: 'Clerk Page'
+                                    });
+                                });
+                                app.get('/edclerk', (req, res) => {                                    
+                                    res.render('edclerk', {
+                                        pagename: 'Clerk Page'
+                                    });
+                                });
+                                app.get('/seeMemb', (req, res) => {
+                                    res.render('seeMemb', {
+                                        pagename: 'Our Members'
+                                    });
+                                });
+                                app.get('/addMemb', (req, res) => {
+                                    res.render('addMemb', {
+                                        pagename: 'Add Members'
+                                    });
+                                });
+                                app.get('/commitMemb', (req, res) => {
+                                    res.render('commitMemb', {
+                                        pagename: 'Commit Members'
+                                    });
+                                });
                             }
                         });
                         /*res.render('manager');
@@ -719,6 +779,60 @@ function getmanagers(res){
         pagename: 'Add Branch',managers : mngoptions ,countries:cntoptions, cities : cityoptions
     });
    })   
+}
+function seetools(res,mngssn){
+    var query = "SELECT branch_number from branch where manager_ssn = '"+mngssn+"';";
+    connection.query(query,function(err,result){
+        if(err) throw err;
+        var brnum = result[0].branch_number;
+        connection.query('SELECT * from tool AS T INNER JOIN branch_tools AS B ON T.product_number = B.tool_id where branch_number = '+brnum
+        ,function(err,result){
+            if(err) throw err;
+            console.log(result);
+            var toolsopt="";
+            for(var i=0; i<result.length;i++){
+                toolsopt += '<tr><td>'+result[i].product_number+'</td>';
+                toolsopt += '<td>'+result[i].name+'</td>';
+                toolsopt += '<td>'+result[i].price+'</td>';
+                toolsopt += '<td>'+result[i].manufacture_company+'</td>';
+                toolsopt += '<td>'+result[i].date_of_Add+'</td></tr>';
+            };
+
+
+            res.render('seetools',{
+                tools : toolsopt
+            });
+        })
+
+
+    })
+}
+
+function seeactivity(res,mng_ssn){
+    var query = "SELECT branch_number from branch where manager_ssn = '"+mng_ssn+"';";
+    connection.query(query,function(err,result){
+        if(err) throw err;
+        var brnum = result[0].branch_number;
+        connection.query('SELECT * from type AS T INNER JOIN activity  AS A ON T.type_id = A.type_id INNER JOIN branch_activites AS B ON A.activity_id = B.activity_id where branch_number = '+brnum
+        ,function(err,result){
+            if(err) throw err;
+            console.log(result);
+            var toolsopt="";
+            for(var i=0; i<result.length;i++){
+                //toolsopt += '<tr><td>'+result[i].activity_id+'</td>';
+                toolsopt += '<tr><td>'+(i+1)+'</td>';
+                toolsopt += '<td>'+result[i].name+'</td>';
+                toolsopt += '<td>'+result[i].type_value+'</td></tr>';
+            };
+
+
+            res.render('activity',{
+                Activiteis : toolsopt
+            });
+        })
+
+
+    })
 }
 
 function seebranches(res){

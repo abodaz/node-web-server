@@ -21,7 +21,108 @@
     <div class="formm">
       <h3>Registration</h3>
 
-      {{>addmember}}
+
+      <div class="col-lg-12">
+        <div class="row">
+          <p></p>
+          <div class="col-lg-1">
+            <label>FirstName</label>
+          </div>
+          <div class="col-lg-3">
+            <input class="form-control" name="first_name" />
+          </div>
+          <div class="col-lg-1 ">
+            <label>LastName</label>
+          </div>
+          <div class="col-lg-3">
+            <input class="form-control" name="last_name" />
+          </div>
+          <div class="col-lg-1">
+            <label>UserName</label>
+          </div>
+          <div class="col-lg-3">
+            <input class="form-control" name="user_name" />
+          </div>
+        </div>
+        <div class="row">
+          <p></p>
+          <div class="col-lg-1">
+            <label>Email</label>
+          </div>
+          <div class="col-lg-3">
+            <input type="email" class="form-control" name="user_email" />
+          </div>
+          <div class="col-lg-1 ">
+            <label>Password</label>
+          </div>
+          <div class="col-lg-3">
+            <input type="password" class="form-control" name="user_password" />
+          </div>
+        </div>
+        <div class="row">
+          <p></p>
+          <div class="col-lg-1">
+            <label>PhoneNO.</label>
+          </div>
+          <div class="col-lg-3">
+            <input class="form-control" />
+          </div>
+
+          <div class="col-lg-1">
+            <label>Birthday</label>
+          </div>
+          <div class="col-lg-3">
+            <input type="date" name="Bday">
+          </div>
+
+        </div>
+        <div class="row">
+          <p></p>
+          <div class="col-lg-1">
+            <label>Gender</label>
+          </div>
+          <div class="col-lg-3">
+            <select name="select">
+              <!--Supplement an id here instead of using 'name'-->
+              <option value="value1">Male</option>
+              <option value="value2">Female</option>
+            </select>
+          </div>
+          <div class="col-lg-1 ">
+            <label>Weight</label>
+          </div>
+          <div class="col-lg-3">
+            <input class="form-control" name="weight" />
+          </div>
+        </div>
+        <div class="row">
+          <p></p>
+          <div class="col-lg-1">
+            <label>Branch</label>
+          </div>
+          <div class="col-lg-3">
+            <select name="select">
+              <!--Supplement an id here instead of using 'name'-->
+              <option value="value1">Gzaz</option>
+              <option value="value2">Remal</option>
+              <option value="value2">Sabra</option>
+            </select>
+          </div>
+
+          <div class="col-lg-1">
+            <label>MemShipId</label>
+          </div>
+          <div class="col-lg-3">
+            <select name="select">
+              <!--Supplement an id here instead of using 'name'-->
+              <option value="value1">1</option>
+              <option value="value2">2</option>
+              <option value="value2">3</option>
+            </select>
+          </div>
+        </div>
+        
+      </div>
       <div class="row">
 
         <div class="col-lg-12 col-md-6">
