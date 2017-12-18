@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="col-lg-12 ">
-
+                    <form action="/addmem" method="POST">
                     <div class="col-lg-12">
                         <div class="row">
                             <p></p>
@@ -63,7 +63,7 @@
                                 <label>PhoneNO.</label>
                             </div>
                             <div class="col-lg-3">
-                                <input class="form-control" />
+                                <input class="form-control" name="phone" />
                             </div>
 
                             <div class="col-lg-1">
@@ -80,10 +80,10 @@
                                 <label>Gender</label>
                             </div>
                             <div class="col-lg-3">
-                                <select name="select">
+                                <select name="gender">
                                     <!--Supplement an id here instead of using 'name'-->
-                                    <option value="value1">Male</option>
-                                    <option value="value2" >Female</option>
+                                    <option value="M">Male</option>
+                                    <option value="F" >Female</option>
                                 </select>
                             </div>
                             <div class="col-lg-1 ">
@@ -149,12 +149,12 @@
 
                         <div class="col-lg-12 col-md-6">
                             <label class="col-lg-9 col-md-3"></label>
-                            <button class="col-lg-2" type="button">Add Member</button>
+                            <button class="col-lg-2" type="submit">Add Member</button>
                         </div>
                     </div>
 
 
-
+                </form>
                 </div>
             </div>
         </div>
