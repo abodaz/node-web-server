@@ -406,7 +406,7 @@ app.post('/login', function (req, res) {
 
                     }
 
-                    if (result[0].user_type = 'E') // for the first Branch Manager
+                    if (result[0].user_type == 'E') // for the first Branch Manager
                     {
                         console.log('Employee logged in -->');
                         query = "SELECT job_id,ssn from employee where user_id="+result[0].user_id;
@@ -633,6 +633,7 @@ app.post('/login', function (req, res) {
                                     console.log(req.body);
                                     var member = {};
                                     var user = {};
+                                    var memship = {};
                                     var errors = [];
                                     var pass = md5(req.body.user_password);
                                     user.username = req.body.user_name;
@@ -645,12 +646,14 @@ app.post('/login', function (req, res) {
                                     member.jdate = req.body.Fday;
                                     member.weight = req.body.weight;
                                     member.phone = req.body.phone;
+                                    member.duration = req.body.select;
                                     if(! user.username) errors.push('user name missed');
                                     if(! user.password) errors.push('password missed');
                                     if(! member.fname) errors.push('first name missed');
                                     if(! member.lname) errors.push('last name missed');
                                     if(! member.gender) errors.push('gender missed');
                                     if(! member.jdate) errors.push('date of join missed');
+                                    if(! member.duration) errors.push('duration missed');
                                     if(! errors.length){
                                         console.log('Clerk want to add member --> '+id);
                                         addmem(member,user,_mngagar_ssn,connection);
@@ -675,8 +678,71 @@ app.post('/login', function (req, res) {
                         
 
                     }
-                    else if(result[0].user_type = 'M'){ // For members ...
+                    else if(result[0].user_type == 'M'){ // For members ...
+                        var user_id = result[0].user_id;
+                        var name = result[0].user_name;
+                        query = "SELECT * from MEMBER AS M INNER JOIN membership AS S ON M.member_id = S.member_id where M.user_id = '"+user_id+"';";
+                        connection.query(query,function(err,result){
+                            if(err) throw err;
+                            console.log(result);
+                            res.render('memb');
+                            
+                            app.get('/edmemb',function(req,res){
+                                res.render('edmemb',{
+                                    first_name: result[0].first_name,
+                                    last_name: result[0].last_name,
+                                    user_name: name
+                                });
+                            })
 
+                            app.post('/edmemb',function(req,res){
+                                var fname = req.body.fname;
+                                var lname = req.body.lname;
+                                var user = req.body.user;
+                                var errors = [];
+                                if(! fname ) errors.push("No first name");
+                                if(! lname) errors.push('No last name');
+                                if(! user) errors.push("No user name");
+
+                                if(! errors.length){ // ADD update for employee table .................. ya dog
+                                    connection.query("UPDATE users set user_name = '"+user+"' WHERE user_id = "+_id,
+                                    function(err,result){
+                                        if(err) throw err;
+                                        console.log('Update user table');
+                                    });
+                                    connection.query("UPDATE member set first_name ='"+fname+"', last_name ='"+lname+"' WHERE user_id ="+_id,
+                                    function(err,result){
+                                    if(err) throw err;
+                                    console.log('Update member table');
+                                    
+                                    });
+                                    var oldpass = req.body.oldpass;
+                                    var newpass = req.body.newpass;
+                                    if(oldpass && newpass) {
+                                        console.log('You try to change password');
+                                        connection.query("SELECT user_password from users where user_id = "+_id+";",function(err,result){
+                                            if(err) throw err;
+                                            var correctpass = result[0].user_password;
+                                            var passEnc = md5(oldpass);
+                                            console.log(correctpass);
+                                            console.log(passEnc);
+                                            if(correctpass == passEnc) {
+                                                console.log('Yes the password is true');
+                                                var newpassword = md5(newpass);
+                                                connection.query("UPDATE users set user_password ='"+newpassword+"' WHERE user_id ="+_id+";",function(err){
+                                                    if(err) throw err;
+                                                    console.log('New password updated');
+                                                })
+                                            }
+                                        })
+                                    }
+                                    
+                                };
+                                res.redirect('edmemb');
+                            })
+                           
+                        });
+                        
                     }
 
 
@@ -689,9 +755,7 @@ app.post('/login', function (req, res) {
     //res.end('Thank you');
 });
 
-app.get('/memb',function(req,res){
-    res.render('memb');
-})
+
 app.listen(port, () => {
     console.log(`server port is ${port}`)
 });

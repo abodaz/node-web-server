@@ -13,7 +13,14 @@ module.exports = function addmem(member,user,clerk_ssn,connection){
             querymem += "VALUES('"+member.fname+"','"+member.lname+"','"+member.gender+"','"+member.bdate+"','"+member.jdate+"',"+member.weight+","+brnum+","+user_id+");";
             connection.query(querymem,function(err,result){
                 if(err) throw err;
+                var mem_id = result.insertId;
                 console.log("I think we've added a new member O.o");
+                var querym = "INSERT INTO membership VALUES ('"+member.jdate+"',DATE_ADD('"+member.jdate + "', INTERVAL " + member.duration+" MONTH), "+mem_id+", "+clerk_ssn+");";
+                connection.query(querym,function(req,res){
+                    if(err) throw err;
+                    console.log('NEW membership added!');
+                    console.log(result);
+                });
             })
         })
         
