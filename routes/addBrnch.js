@@ -1,5 +1,8 @@
 module.exports = function addbranch(branch,connection){
     var name = [];
+    var format = /[ !@#$%^&*0123456789()_+\-=\[\]{};':"\\|,.<>\/?]/;
+    var num = /[0-9]/;
+    if(format.test(branch.name) || !num.test(branch.number)){console.log('you have entered an error information'); return;}
     name = branch.mng.split(" ");
     connection.query("SELECT ssn from employee where first_name ='"+name[0]+"' and last_name ='"+name[1]+"';SELECT city_id from city where city_name ='"+branch.city+"'; SELECT country_id from country where country_name ='"+branch.country+"';"
         ,function(err,result){

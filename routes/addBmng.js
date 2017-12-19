@@ -1,4 +1,9 @@
 module.exports = function addmng(manager, user,connection){
+    var format = /[ !@#$%^&*0123456789()_+\-=\[\]{};':"\\|,.<>\/?]/;
+    var formatu = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+    var phoneno = /^\d{14}$/;
+    var ssnnu = /^\d{9}$/;
+    if(format.test(manager.fname) || formatu.test(user.username)|| format.test(manager.lname) || !phoneno.test(manager.phone)|| !ssnnu.test(manager.ssn) ){console.log('you have entered an error information'); return;}
     var job_id = '100';
     query = "INSERT INTO employee VALUES('"+manager.ssn+"','"+manager.fname+"','"+manager.lname+"','"+manager.email+"','"+manager.phone+"','"+manager.bdate+"','"+manager.hdate+"','"+job_id+"',";
 

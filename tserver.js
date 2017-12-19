@@ -38,7 +38,7 @@ connection.connect(function (err) {
     if (err) console.error(err);
     else console.log('Connected!');
 });
-
+console.log(md5('2143906'));
 /*connection.query("INSERT INTO Users(user_name,user_password) VALUES('aboodaz','"+md5(2143906)+"');",function(err){
     if(err) console.error(err);
     else console.log('Row done');
@@ -221,6 +221,7 @@ app.post('/signup', function (req, res) {
 });
 
 app.post('/login', function (req, res) {
+    try {
     console.log('You have entered info to log in -----');
     var name = req.body.username;
     var pass = req.body.password;
@@ -260,6 +261,12 @@ app.post('/login', function (req, res) {
                             seebranches(res);
                         });
 
+                        app.post('/singleBranch',function(req,res){
+                            var branch_num = req.body.select;
+                            res.render('singleBranch',{
+
+                            });
+                        })
                         app.get('/addBM', (req, res) => {
                             res.render('addBM', {
                                 pagename: 'Add Branch Manager'
@@ -271,6 +278,10 @@ app.post('/login', function (req, res) {
                             getEmp(res,id,admin);  
                              
                         });
+                        app.get('/checkB',function(req,res){
+                            seebranch(req,res);
+                            
+                        })
                         app.post('/edadmin',function(req,res){ // WHEN CLICK COMMIT BUTTON..
                             console.log('HI');
                             var fname = req.body.fname;
@@ -325,11 +336,14 @@ app.post('/login', function (req, res) {
                             getEmp(res,id,admin);
                             //res.redirect('/edadmin');
                         });
-                        app.get('/singleBranch', (req, res) => {
-                            seeadminusers(res);
+                        //app.get('/singleBranch', (req, res) => {
+                      //      seeadminusers(res,req);
                             /*res.render('singleBranch', {
                                 pagename: 'Branch'
                             });*/
+                    //    });
+                        app.post('/checkB',function(req,res){
+                            seeadminusers(res,req);
                         });
                         app.get('/addB',(req,res)=>{
                             getmanagers(res);                            
@@ -376,7 +390,7 @@ app.post('/login', function (req, res) {
                             if(! branch.mng) errors.push('manager missed!');
                             if(! errors.length) {
                                 addbranch(branch,connection);
-                                res.end('You have added a branch');
+                                res.end('see console for more info');
                             } else {
                                 console.log(errors);
                             }
@@ -398,10 +412,28 @@ app.post('/login', function (req, res) {
                             manager.bdate = req.body.Bday;
                             manager.hdate = req.body.Hday;
                             manager.phone = req.body.phone;
-                            manager.salary = req.body.msalary;
-                            console.log(req.body);
-                            addmng(manager,user,connection);
-                            res.end('You have added a branch manager');
+                            manager.salary = req.body.salary;
+                            var diff = manager.hdate.split('-')[0] - manager.bdate.split('-')[0];
+                            if(! manager.ssn) errors.push('ssn error!');
+                            if(! manager.fname) errors.push('manager fname error!');
+                            if(! manager.lname) errors.push('manager lname error!');
+                            if(! manager.email) errors.push('manager email error!');
+                            if(! manager.bdate) errors.push('manager bdate error!');
+                            if(! manager.hdate) errors.push('manager hdate error!');
+                            if(! manager.phone) errors.push('manager phone error!');
+                            if(! manager.salary || manager.salary <= 0) errors.push('manager salary error!');
+                            if(! user.username) errors.push('manager uname error!');
+                            if(! user.password) errors.push('manager password error!');
+                            if(diff < 17) errors.push('not valid dates')
+                            console.log(manager.hdate.split('-')[0] - manager.bdate.split('-')[0]);
+                            if(! errors.length) {
+                                console.log(req.body);                                
+                                addmng(manager,user,connection);
+                                res.end('see console for more info');
+                            }else {
+                                console.log(errors);
+                                res.end(''+errors);
+                            }
                         });
 
                     }
@@ -497,7 +529,7 @@ app.post('/login', function (req, res) {
                                     console.log(user);
                                     console.log(ssn);
                                     addclerk(clerk,user,_mngagar_ssn,connection);
-                                    res.end('You have added new clerk :)');
+                                    res.end('see console for more info');
                                 });
                                 app.post('/addtrainer',function(req,res){
                                     console.log('you try to add new trainer let us see the result');
@@ -528,7 +560,7 @@ app.post('/login', function (req, res) {
                                         console.log(trainer);
                                         console.log(user);
                                         addtrainer(trainer,user,_mngagar_ssn,connection);
-                                        res.end('You have added new trainer :)');
+                                        res.end('see console for more info');
                                     } else {
                                         console.log(errors);
                                         res.end(''+errors);
@@ -564,7 +596,7 @@ app.post('/login', function (req, res) {
                                         console.log(cleaner);
                                         console.log(user);
                                         addcleaner(cleaner,user,_mngagar_ssn,connection);
-                                        res.end('You have added new trainer :)');
+                                        res.end('see console for more info');
                                     } else {
                                         console.log(errors);
                                         res.end(''+errors);
@@ -751,7 +783,9 @@ app.post('/login', function (req, res) {
                 }
             }
         });
-        
+    } catch(err){
+        console.log(err);
+    }   
     //res.end('Thank you');
 });
 
@@ -759,6 +793,22 @@ app.post('/login', function (req, res) {
 app.listen(port, () => {
     console.log(`server port is ${port}`)
 });
+
+function seebranch(req,res){
+    var query = "SELECT branch_number from branch;";
+    connection.query(query,function(err,result){
+        if(err) throw err;
+        console.log(result);
+        var opt = "";
+        for(var i=0;i<result.length;i++){
+            opt += "<option value="+result[i].branch_number+">"+result[i].branch_number+"</option>";
+        }
+        res.render('checkB',{
+            branches : opt
+        });
+    })
+    
+}
 function editclerk(res,req,id){
     var fname = req.body.fname;
     var lname = req.body.lname;
@@ -1056,10 +1106,8 @@ function seebranches(res){
             branchopt += '<td>'+result[i].city_name+'</td>';
             branchopt += '<td>'+result[i].country_name+'</td>';
             branchopt += '<td>'+result[i].street+'</td>';
-            branchopt += '<td>'+result[i].first_name +" "+result[i].last_name+'</td>';
-            branchopt += '<td><a href="singleBranch">';
-            branchopt += '<div style="height:100%;width:100%">';
-            branchopt +='Check</div> </a></td> </tr>';
+            branchopt += '<td>'+result[i].first_name +" "+result[i].last_name+'</td></tr>';
+           
 
         };
         
@@ -1183,10 +1231,12 @@ function seemanagerusers(res,result){
     }) 
 }
 
-function seeadminusers(res){
-    
-    console.log('SSN manager after sent is --> '+120332010);
-    var querybn = "SELECT branch_number from branch where manager_ssn = '" + 120332010 +"';";
+function seeadminusers(res,req){
+    var num = req.body.select;
+    console.log('Any thing shown here');
+    console.log(num);
+    //console.log('SSN manager after sent is --> '+120332010);
+    var querybn = "SELECT branch_number from branch where branch_number = '" + num +"';";
     connection.query(querybn,function(err,result){
         if(err) throw err;
         var brnum = result[0].branch_number;
@@ -1212,6 +1262,7 @@ function seeadminusers(res){
                    transopt += '<td>'+result[i].last_name+'</td>';
                    transopt += '<td>'+result[i].user_name+'</td>';
                    transopt += '<td>'+result[i].email+'</td>';
+                   transopt += '<td>'+result[i].phone_number+'</td>';
                    transopt += '<td>'+result[i].date_of_birth+'</td>';
                    transopt += '<td>'+result[i].date_of_hire+'</td>';
                    transopt +=' </tr>';
@@ -1242,6 +1293,7 @@ function seeadminusers(res){
                            clerksopt += '<td>'+result[i].last_name+'</td>';
                            clerksopt += '<td>'+result[i].user_name+'</td>';
                            clerksopt += '<td>'+result[i].email+'</td>';
+                           clerksopt += '<td>'+result[i].phone_number+'</td>';
                            clerksopt += '<td>'+result[i].date_of_birth+'</td>';
                            clerksopt += '<td>'+result[i].date_of_hire+'</td>';
                            clerksopt +=' </tr>';
@@ -1275,13 +1327,14 @@ function seeadminusers(res){
                                 cleanrsopt += '<td>'+result[i].last_name+'</td>';
                                 cleanrsopt += '<td>'+result[i].user_name+'</td>';
                                 cleanrsopt += '<td>'+result[i].email+'</td>';
+                                cleanrsopt += '<td>'+result[i].phone_number+'</td>';
                                 cleanrsopt += '<td>'+result[i].date_of_birth+'</td>';
                                 cleanrsopt += '<td>'+result[i].date_of_hire+'</td>';
                                 cleanrsopt +=' </tr>';
                             };
-
+                            console.log(memopt);
                             res.render('singleBranch', {
-                                pagename: 'Branch',  members:memopt
+                                pagename: 'Branch',  members:memopt, trainers:transopt ,clerks : clerksopt, emps: cleanrsopt
                             });
                             
                                 /*res.render('si', {
