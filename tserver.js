@@ -26,7 +26,7 @@ app.use(express.static(__dirname + '/adminViews'));
 var config = 
 {
   user:'root',
-  password: 'hf4pe@l2msh',
+  password: '',
   host: 'localhost', // update me
   database:'gym',
   port:3306,
